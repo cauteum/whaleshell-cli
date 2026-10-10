@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing tag to rebuild (e.g. v0.1.7)"
+        description: "Existing tag to rebuild (e.g. v0.1.8)"
         required: false
 
 permissions:
