@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 the cauteum authors
+# SPDX-FileCopyrightText: Copyright (c) 2026 the cautem authors
 # SPDX-License-Identifier: Apache-2.0
 #
 # Manual nightly multi-arch binaries → GitHub Release tag `nightly`.
@@ -24,30 +24,30 @@ jobs:
     name: Build & publish nightly
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout cauteum-cli
+      - name: Checkout cautem-cli
         uses: actions/checkout@v4
         with:
-          path: cauteum-cli
+          path: cautem-cli
           fetch-depth: 0
 
       - name: Checkout sibling modules
         run: |
           set -euo pipefail
           declare -A REMOTES=(
-            [cauteum-core]=cautem/cauteum-core
-            [cauteum-display]=cautem/cauteum-display
-            [cauteum-driver]=cautem/cauteum-driver
-            [cauteum-providers]=cautem/cauteum-providers
-            [cauteum-proxy]=cautem/cauteum-proxy
-            [cauteum-runtime]=cautem/cauteum-runtime
-            [cauteum-sdk]=cautem/cauteum-sdk
-            [cauteum-gateway]=cautem/cauteum-gateway
+            [cautem-core]=cautem/cautem-core
+            [cautem-display]=cautem/cautem-display
+            [cautem-driver]=cautem/cautem-driver
+            [cautem-providers]=cautem/cautem-providers
+            [cautem-proxy]=cautem/cautem-proxy
+            [cautem-runtime]=cautem/cautem-runtime
+            [cautem-sdk]=cautem/cautem-sdk
+            [cautem-gateway]=cautem/cautem-gateway
             [slogx]=cautem/slogx
           )
           for local in \
-            cauteum-core cauteum-display cauteum-driver \
-            cauteum-providers cauteum-proxy cauteum-runtime \
-            cauteum-sdk cauteum-gateway slogx
+            cautem-core cautem-display cautem-driver \
+            cautem-providers cautem-proxy cautem-runtime \
+            cautem-sdk cautem-gateway slogx
           do
             remote="${REMOTES[$local]}"
             if ! git clone --depth 1 --branch main \
@@ -64,20 +64,20 @@ jobs:
           {
             echo 'go 1.27.0'
             echo 'use ('
-            for d in cauteum-* slogx; do
+            for d in cautem-* slogx; do
               if [[ -d "$d" ]]; then
                 echo "  ./$d"
               fi
             done
             echo ')'
             echo 'replace ('
-            for d in cauteum-*; do
+            for d in cautem-*; do
               if [[ -d "$d" ]]; then
                 echo "  github.com/cautem/${d} v0.1.0-alpha.1 => ./$d"
                 echo "  github.com/cautem/${d} v0.1.0-alpha.2 => ./$d"
                 echo "  github.com/cautem/${d} v0.1.0-beta.1 => ./$d"
                 echo "  github.com/cautem/${d} v0.1.0-beta.2 => ./$d"
-                echo "  github.com/cautem/${d} v0.1.5 => ./$d"
+                echo "  github.com/cautem/${d} v0.1.6 => ./$d"
               fi
             done
             if [[ -d slogx ]]; then
@@ -97,13 +97,13 @@ jobs:
           go-version: "1.27.2"
           cache: true
           cache-dependency-path: |
-            cauteum-cli/go.sum
-            cauteum-core/go.sum
-            cauteum-runtime/go.sum
-            cauteum-gateway/go.sum
+            cautem-cli/go.sum
+            cautem-core/go.sum
+            cautem-runtime/go.sum
+            cautem-gateway/go.sum
 
       - name: Cross-compile release matrix
-        working-directory: cauteum-cli
+        working-directory: cautem-cli
         run: |
           set -euo pipefail
           ver="0.0.0-nightly.$(date -u +%Y%m%d)+$(git rev-parse --short HEAD)"
@@ -128,20 +128,20 @@ jobs:
           helpers="${{ github.workspace }}/helpers"
           bash scripts/build-linux-helpers.sh "$ver" "$helpers" amd64 arm64
 
-          # Same layout as GoReleaser: cauteum + libexec/cauteum/linux-<arch>/.
+          # Same layout as GoReleaser: cautem + libexec/cautem/linux-<arch>/.
           build_cli() {
             local goos="$1" goarch="$2" ext="${3:-}"
-            local name="cauteum_$(archive_os "$goos")_$(archive_arch "$goarch")"
+            local name="cautem_$(archive_os "$goos")_$(archive_arch "$goarch")"
             local stage="${out}/stage-${name}"
             echo "→ ${name}"
-            mkdir -p "${stage}/libexec/cauteum"
+            mkdir -p "${stage}/libexec/cautem"
             GOOS="$goos" GOARCH="$goarch" go build -trimpath \
-              -ldflags="-s -w -X github.com/cautem/cauteum-cli/internal/service.BuildVersion=${ver}" \
-              -o "${stage}/cauteum${ext}" ./cmd/cauteum
-            cp -R "${helpers}/linux-${goarch}" "${stage}/libexec/cauteum/"
-            if [[ "$goos" != "windows" && -d ../cauteum-gateway ]]; then
-              GOOS="$goos" GOARCH="$goarch" go build -C ../cauteum-gateway -trimpath -ldflags="-s -w" \
-                -o "${stage}/cauteum-gateway" ./cmd/cauteum-gateway
+              -ldflags="-s -w -X github.com/cautem/cautem-cli/internal/service.BuildVersion=${ver}" \
+              -o "${stage}/cautem${ext}" ./cmd/cautem
+            cp -R "${helpers}/linux-${goarch}" "${stage}/libexec/cautem/"
+            if [[ "$goos" != "windows" && -d ../cautem-gateway ]]; then
+              GOOS="$goos" GOARCH="$goarch" go build -C ../cautem-gateway -trimpath -ldflags="-s -w" \
+                -o "${stage}/cautem-gateway" ./cmd/cautem-gateway
             fi
             cp install.sh "${stage}/"
             if [[ "$goos" == "windows" ]]; then
@@ -158,14 +158,14 @@ jobs:
           build_cli darwin arm64
           build_cli windows amd64 .exe
 
-          if [[ -d ../cauteum-gateway ]]; then
+          if [[ -d ../cautem-gateway ]]; then
             for goos in linux darwin; do
               for goarch in amd64 arm64; do
-                name="cauteum-gateway_$(archive_os "$goos")_$(archive_arch "$goarch")"
+                name="cautem-gateway_$(archive_os "$goos")_$(archive_arch "$goarch")"
                 echo "→ ${name}"
-                GOOS="$goos" GOARCH="$goarch" go build -C ../cauteum-gateway -trimpath -ldflags="-s -w" \
-                  -o "${out}/cauteum-gateway" ./cmd/cauteum-gateway
-                (cd "$out" && tar -czf "${name}.tar.gz" cauteum-gateway && rm -f cauteum-gateway)
+                GOOS="$goos" GOARCH="$goarch" go build -C ../cautem-gateway -trimpath -ldflags="-s -w" \
+                  -o "${out}/cautem-gateway" ./cmd/cautem-gateway
+                (cd "$out" && tar -czf "${name}.tar.gz" cautem-gateway && rm -f cautem-gateway)
               done
             done
           fi
@@ -189,7 +189,7 @@ jobs:
 
             ### Install
             ```bash
-            curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh | CAUTEUM_VERSION=nightly sh
+            curl -LsSf https://raw.githubusercontent.com/cautem/cautem-cli/main/install.sh | CAUTEM_VERSION=nightly sh
             ```
           files: dist/*
         env:

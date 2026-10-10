@@ -13,7 +13,7 @@ func TestInstallRestrictsManagedFilePermissions(t *testing.T) {
 		Managed: filepath.Join(t.TempDir(), "managed", "ssh_config"),
 		User:    filepath.Join(t.TempDir(), "ssh", "config"),
 	}
-	if err := Install(path, "cauteum-demo", RenderHostBlock("cauteum-demo", "w ssh-proxy --name demo")); err != nil {
+	if err := Install(path, "cautem-demo", RenderHostBlock("cautem-demo", "w ssh-proxy --name demo")); err != nil {
 		t.Fatal(err)
 	}
 	info, err := os.Stat(path.Managed)

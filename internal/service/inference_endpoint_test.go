@@ -4,26 +4,26 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cautem/cauteum-core/defaults"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-core/defaults"
+	"github.com/cautem/cautem-sdk/go/cautem"
 )
 
-type providerEndpointStub struct{ record cauteum.ProviderRecord }
+type providerEndpointStub struct{ record cautem.ProviderRecord }
 
-func (s providerEndpointStub) GetProvider(context.Context, string) (cauteum.ProviderRecord, error) {
+func (s providerEndpointStub) GetProvider(context.Context, string) (cautem.ProviderRecord, error) {
 	return s.record, nil
 }
 func TestInferenceUpstreamConfiguration(t *testing.T) {
 	cases := []struct {
 		name   string
-		record cauteum.ProviderRecord
+		record cautem.ProviderRecord
 		want   string
 	}{
-		{"deepinfra", cauteum.ProviderRecord{Type: "deepinfra"}, defaults.InferenceDeepInfra},
-		{"unknown", cauteum.ProviderRecord{Type: "custom"}, ""},
-		{"override", cauteum.ProviderRecord{Type: "custom", Config: cauteum.ProviderConfig{"base_url": "https://models.example/v1"}}, "https://models.example/v1"},
-		{"invalid", cauteum.ProviderRecord{Type: "openai", Config: cauteum.ProviderConfig{"base_url": "file:///credentials"}}, ""},
-		{"userinfo", cauteum.ProviderRecord{Type: "openai", Config: cauteum.ProviderConfig{"base_url": "https://secret@models.example"}}, ""},
+		{"deepinfra", cautem.ProviderRecord{Type: "deepinfra"}, defaults.InferenceDeepInfra},
+		{"unknown", cautem.ProviderRecord{Type: "custom"}, ""},
+		{"override", cautem.ProviderRecord{Type: "custom", Config: cautem.ProviderConfig{"base_url": "https://models.example/v1"}}, "https://models.example/v1"},
+		{"invalid", cautem.ProviderRecord{Type: "openai", Config: cautem.ProviderConfig{"base_url": "file:///credentials"}}, ""},
+		{"userinfo", cautem.ProviderRecord{Type: "openai", Config: cautem.ProviderConfig{"base_url": "https://secret@models.example"}}, ""},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {

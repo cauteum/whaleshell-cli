@@ -11,7 +11,7 @@ landlock:
 network_policies: {}
 
 inference:
-  providers: [local]   # host.cauteum.internal :11434,1234,8000,8080
+  providers: [local]   # host.cautem.internal :11434,1234,8000,8080
 
 credentials:
   env_allow: [TERM, LANG]

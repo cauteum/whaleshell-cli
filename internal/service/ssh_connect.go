@@ -14,11 +14,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cautem/cauteum-cli/internal/sshconfig"
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cautem/cauteum-core/defaults"
-	"github.com/cautem/cauteum-core/relayproto"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/sshconfig"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-core/defaults"
+	"github.com/cautem/cautem-core/relayproto"
+	"github.com/cautem/cautem-sdk/go/cautem"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/term"
 )
@@ -58,7 +58,7 @@ func (a *App) resolveGatewayURL(url, name string) (string, error) {
 		}
 		g, ok := cfg.Gateways[name]
 		if !ok || g.URL == "" {
-			return "", fmt.Errorf("gateway %q not in config (cauteum gateway add)", name)
+			return "", fmt.Errorf("gateway %q not in config (cautem gateway add)", name)
 		}
 		return strings.TrimRight(g.URL, "/"), nil
 	}
@@ -140,7 +140,7 @@ func (a *App) SandboxSSHConfig(name string, install bool) error {
 func (a *App) SandboxConnect(opt ConnectOpts) error {
 	name := strings.TrimSpace(opt.Name)
 	if name == "" {
-		return fmt.Errorf("usage: cauteum sandbox connect <name> [--editor vscode|cursor] [-- cmd]")
+		return fmt.Errorf("usage: cautem sandbox connect <name> [--editor vscode|cursor] [-- cmd]")
 	}
 	if ed := strings.ToLower(strings.TrimSpace(opt.Editor)); ed != "" {
 		return a.openEditor(name, ed)
@@ -282,7 +282,7 @@ func (a *App) SSHProxy(opt SSHProxyOpts) error {
 }
 
 // createSSHSessionWait retries while the supervisor relay comes up.
-func createSSHSessionWait(ctx context.Context, c *cauteum.Client, name string, timeout time.Duration) (cauteum.SSHSession, error) {
+func createSSHSessionWait(ctx context.Context, c *cautem.Client, name string, timeout time.Duration) (cautem.SSHSession, error) {
 	deadline := time.Now().Add(timeout)
 	warned := false
 	for {
@@ -292,8 +292,8 @@ func createSSHSessionWait(ctx context.Context, c *cauteum.Client, name string, t
 		if err == nil {
 			return sess, nil
 		}
-		if !errors.Is(err, cauteum.ErrSandboxNotReady) || time.Now().After(deadline) {
-			return cauteum.SSHSession{}, fmt.Errorf("ssh-proxy: create ssh session for %q: %w", name, err)
+		if !errors.Is(err, cautem.ErrSandboxNotReady) || time.Now().After(deadline) {
+			return cautem.SSHSession{}, fmt.Errorf("ssh-proxy: create ssh session for %q: %w", name, err)
 		}
 		if !warned {
 			fmt.Fprintf(os.Stderr, "ssh-proxy: waiting for sandbox %s supervisor relay…\n", name)
@@ -301,7 +301,7 @@ func createSSHSessionWait(ctx context.Context, c *cauteum.Client, name string, t
 		}
 		select {
 		case <-ctx.Done():
-			return cauteum.SSHSession{}, ctx.Err()
+			return cautem.SSHSession{}, ctx.Err()
 		case <-time.After(time.Second):
 		}
 	}

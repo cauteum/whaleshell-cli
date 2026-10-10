@@ -11,7 +11,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	if logPath := os.Getenv("CAUTEUM_FAKE_DOCKER_LOG"); logPath != "" {
+	if logPath := os.Getenv("CAUTEM_FAKE_DOCKER_LOG"); logPath != "" {
 		args := os.Args[1:]
 		f, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
 		if err != nil {
@@ -57,7 +57,7 @@ func TestCleanupDockerTestResourcesIsScopedAndDryRunByDefault(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("PATH", binDir+string(os.PathListSeparator)+os.Getenv("PATH"))
-	t.Setenv("CAUTEUM_FAKE_DOCKER_LOG", logPath)
+	t.Setenv("CAUTEM_FAKE_DOCKER_LOG", logPath)
 
 	a := New()
 	if err := a.CleanupDockerTestResources(context.Background(), false); err != nil {

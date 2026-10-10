@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cautem/cauteum-cli/internal/osargs"
+	"github.com/cautem/cautem-cli/internal/osargs"
 )
 
 func TestParseSSHProxyModes(t *testing.T) {

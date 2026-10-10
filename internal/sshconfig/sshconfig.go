@@ -1,5 +1,5 @@
 // Package sshconfig manages the OpenShell-style SSH client configuration:
-// a cauteum-owned file (~/.config/cauteum/ssh_config) holding one Host
+// a cautem-owned file (~/.config/cautem/ssh_config) holding one Host
 // block per sandbox, pulled into ~/.ssh/config through a single Include line.
 package sshconfig
 
@@ -10,11 +10,11 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cautem/cauteum-cli/internal/securefile"
+	"github.com/cautem/cautem-cli/internal/securefile"
 )
 
 // AliasPrefix names managed hosts (OpenShell: openshell-<name>).
-const AliasPrefix = "cauteum-"
+const AliasPrefix = "cautem-"
 
 // Alias returns the managed Host alias for a sandbox.
 func Alias(sandbox string) string { return AliasPrefix + sandbox }
@@ -194,8 +194,8 @@ type Paths struct {
 	User    string
 }
 
-// DefaultPaths returns $XDG_CONFIG_HOME/cauteum/ssh_config (or
-// ~/.config/cauteum/ssh_config) and ~/.ssh/config.
+// DefaultPaths returns $XDG_CONFIG_HOME/cautem/ssh_config (or
+// ~/.config/cautem/ssh_config) and ~/.ssh/config.
 func DefaultPaths() (Paths, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
@@ -206,7 +206,7 @@ func DefaultPaths() (Paths, error) {
 		cfgDir = filepath.Join(home, ".config")
 	}
 	return Paths{
-		Managed: filepath.Join(cfgDir, "cauteum", "ssh_config"),
+		Managed: filepath.Join(cfgDir, "cautem", "ssh_config"),
 		User:    filepath.Join(home, ".ssh", "config"),
 	}, nil
 }

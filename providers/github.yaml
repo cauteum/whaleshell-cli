@@ -1,9 +1,9 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 cauteum
+# SPDX-FileCopyrightText: Copyright (c) 2026 cautem
 # SPDX-License-Identifier: Apache-2.0
 
 # Builtin GitHub provider (OpenShell-style level C).
 # Host: export GITHUB_TOKEN=… (or GH_TOKEN). Values stay on the host;
-# guest sees cauteum:resolve:env:GITHUB_TOKEN and the sidecar rewrites on egress.
+# guest sees cautem:resolve:env:GITHUB_TOKEN and the sidecar rewrites on egress.
 
 id: github
 display_name: GitHub

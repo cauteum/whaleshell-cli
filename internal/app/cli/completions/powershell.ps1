@@ -1,4 +1,4 @@
-Register-ArgumentCompleter -CommandName cauteum -ScriptBlock {
+Register-ArgumentCompleter -CommandName cautem -ScriptBlock {
     param($wordToComplete)
 
     @(

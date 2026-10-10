@@ -3,7 +3,7 @@ package providerflags_test
 import (
 	"testing"
 
-	"github.com/cautem/cauteum-cli/internal/providerflags"
+	"github.com/cautem/cautem-cli/internal/providerflags"
 )
 
 func TestParseCreateOpenShell(t *testing.T) {

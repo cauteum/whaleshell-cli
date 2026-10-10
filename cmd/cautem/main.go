@@ -8,9 +8,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/cautem/cauteum-cli/internal/app"
-	"github.com/cautem/cauteum-cli/internal/logger"
-	"github.com/cautem/cauteum-cli/internal/service"
+	"github.com/cautem/cautem-cli/internal/app"
+	"github.com/cautem/cautem-cli/internal/logger"
+	"github.com/cautem/cautem-cli/internal/service"
 	"github.com/cautem/slogx"
 )
 

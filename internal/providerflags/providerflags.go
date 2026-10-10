@@ -26,7 +26,7 @@ type CreateArgs struct {
 
 // ParseCreate accepts OpenShell form only:
 //
-//	cauteum provider create --name NAME --type PROFILE [--from-existing|--credential KEY]
+//	cautem provider create --name NAME --type PROFILE [--from-existing|--credential KEY]
 func ParseCreate(args []string, lookupEnv func(string) (string, bool)) (CreateArgs, error) {
 	if lookupEnv == nil {
 		lookupEnv = os.LookupEnv

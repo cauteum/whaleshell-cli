@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 lkmavi
 # SPDX-License-Identifier: Apache-2.0
 #
-# Default cauteum sandbox policy.
+# Default cautem sandbox policy.
 
 version: 1
 filesystem_policy:
@@ -18,7 +18,7 @@ filesystem_policy:
   read_write:
   - /tmp
   - /dev/null
-  - /cauteum/data
+  - /cautem/data
   - /sandbox
   - /workspace
 landlock:

@@ -20,7 +20,7 @@ filesystem_policy:
   - /tmp
   - /dev/null
   - /workspace
-  - /cauteum/data
+  - /cautem/data
   - /sandbox
 landlock:
   compatibility: best_effort

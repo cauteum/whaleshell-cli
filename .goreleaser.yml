@@ -1,23 +1,23 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 the cauteum authors
+# SPDX-FileCopyrightText: Copyright (c) 2026 the cautem authors
 # SPDX-License-Identifier: Apache-2.0
 #
-# Tagged releases for cauteum-cli (and companion gateway binary).
+# Tagged releases for cautem-cli (and companion gateway binary).
 # Corporate alpha/beta/rc tags are auto-marked as GitHub prereleases.
 version: 2
 
-project_name: cauteum
+project_name: cautem
 
 before:
   hooks:
     # Build both linux helper arches once. Archive `dst` is NOT templated by
     # GoReleaser, so every archive ships linux-amd64 + linux-arm64 under
-    # libexec/cauteum/ (install.sh / sandboxes pick the needed arch).
-    - bash scripts/build-linux-helpers.sh {{ .Version }} build/helpers/libexec/cauteum amd64 arm64
+    # libexec/cautem/ (install.sh / sandboxes pick the needed arch).
+    - bash scripts/build-linux-helpers.sh {{ .Version }} build/helpers/libexec/cautem amd64 arm64
 
 builds:
-  - id: cauteum
-    main: ./cmd/cauteum
-    binary: cauteum
+  - id: cautem
+    main: ./cmd/cautem
+    binary: cautem
     env:
       - CGO_ENABLED=0
     goos: [linux, darwin, windows]
@@ -27,12 +27,12 @@ builds:
         goarch: arm64
     ldflags:
       - -s -w
-      - -X github.com/cautem/cauteum-cli/internal/service.BuildVersion={{.Version}}
+      - -X github.com/cautem/cautem-cli/internal/service.BuildVersion={{.Version}}
 
-  - id: cauteum-gateway
-    dir: ../cauteum-gateway
-    main: ./cmd/cauteum-gateway
-    binary: cauteum-gateway
+  - id: cautem-gateway
+    dir: ../cautem-gateway
+    main: ./cmd/cautem-gateway
+    binary: cautem-gateway
     env:
       - CGO_ENABLED=0
     goos: [linux, darwin]
@@ -40,9 +40,9 @@ builds:
     ldflags:
       - -s -w
 
-  - id: cauteum-console
-    main: ./cmd/cauteum-console
-    binary: cauteum-console
+  - id: cautem-console
+    main: ./cmd/cautem-console
+    binary: cautem-console
     env:
       - CGO_ENABLED=0
     goos: [linux, darwin]
@@ -53,7 +53,7 @@ builds:
 archives:
   - id: cli
     # Gateway and console ride along on Linux/macOS for a plain install.sh setup.
-    ids: [cauteum, cauteum-gateway, cauteum-console]
+    ids: [cautem, cautem-gateway, cautem-console]
     # windows has no gateway build
     allow_different_binary_count: true
     name_template: >-
@@ -72,21 +72,21 @@ archives:
       - README*
       - install.sh
       # Literal dst (no {{ .Arch }} — GoReleaser does not expand templates in dst).
-      - src: build/helpers/libexec/cauteum/linux-amd64/*
-        dst: libexec/cauteum/linux-amd64
+      - src: build/helpers/libexec/cautem/linux-amd64/*
+        dst: libexec/cautem/linux-amd64
         strip_parent: true
         info:
           mode: 0755
-      - src: build/helpers/libexec/cauteum/linux-arm64/*
-        dst: libexec/cauteum/linux-arm64
+      - src: build/helpers/libexec/cautem/linux-arm64/*
+        dst: libexec/cautem/linux-arm64
         strip_parent: true
         info:
           mode: 0755
 
   - id: gateway
-    ids: [cauteum-gateway]
+    ids: [cautem-gateway]
     name_template: >-
-      cauteum-gateway_
+      cautem-gateway_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else }}{{ .Arch }}{{ end }}
@@ -118,16 +118,16 @@ release:
     ## Install
 
     ```bash
-    curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh | sh
+    curl -LsSf https://raw.githubusercontent.com/cautem/cautem-cli/main/install.sh | sh
     ```
 
     Pin a tag:
 
     ```bash
-    curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh | CAUTEUM_VERSION={{ .Tag }} sh
+    curl -LsSf https://raw.githubusercontent.com/cautem/cautem-cli/main/install.sh | CAUTEM_VERSION={{ .Tag }} sh
     ```
 
-    **Alpha / pre-release:** APIs may change. See the development and release guide at cautem.github.io/cauteum-haven.github.io/reference/development/.
+    **Alpha / pre-release:** APIs may change. See the development and release guide at cautem.github.io/sandbox.dev/reference/development/.
 
 snapshot:
   version_template: "{{ .Version }}-next"

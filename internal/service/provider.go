@@ -12,13 +12,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cautem/cauteum-cli/internal/providerflags"
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cautem/cauteum-core/engine"
-	"github.com/cautem/cauteum-core/env"
-	"github.com/cautem/cauteum-core/policy"
-	"github.com/cautem/cauteum-providers/provider"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/providerflags"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-core/engine"
+	"github.com/cautem/cautem-core/env"
+	"github.com/cautem/cautem-core/policy"
+	"github.com/cautem/cautem-providers/provider"
+	"github.com/cautem/cautem-sdk/go/cautem"
 	"gopkg.in/yaml.v3"
 )
 
@@ -286,9 +286,9 @@ func (a *App) ProviderCreate(args providerflags.CreateArgs) error {
 			tok = strings.TrimSpace(cfg.Gateways[cfg.Current].Token)
 		}
 		if tok == "" {
-			return fmt.Errorf("provider create --from-oidc-token: no gateway token (run: cauteum gateway login)")
+			return fmt.Errorf("provider create --from-oidc-token: no gateway token (run: cautem gateway login)")
 		}
-		key := "CAUTEUM_GATEWAY_TOKEN"
+		key := "CAUTEM_GATEWAY_TOKEN"
 		if len(envVars) > 0 {
 			key = envVars[0]
 		}
@@ -318,7 +318,7 @@ func (a *App) ProviderCreate(args providerflags.CreateArgs) error {
 		return err
 	}
 	_, workspace := a.profileScope()
-	rec := cauteum.ProviderRecord{
+	rec := cautem.ProviderRecord{
 		Name:                  args.Name,
 		Type:                  args.Profile,
 		Workspace:             workspace,
@@ -338,7 +338,7 @@ func (a *App) ProviderCreate(args providerflags.CreateArgs) error {
 
 // profileRefreshConfig carries supported OpenShell refresh metadata into the
 // gateway provider record. Secret values are resolved later from encrypted storage.
-func profileRefreshConfig(prof provider.Profile, selectedEnvKeys []string) map[string]cauteum.ProviderRefreshConfig {
+func profileRefreshConfig(prof provider.Profile, selectedEnvKeys []string) map[string]cautem.ProviderRefreshConfig {
 	selected := make(map[string]struct{}, len(selectedEnvKeys))
 	for _, key := range selectedEnvKeys {
 		selected[strings.TrimSpace(key)] = struct{}{}
@@ -360,7 +360,7 @@ func profileRefreshConfig(prof provider.Profile, selectedEnvKeys []string) map[s
 		}
 		return ""
 	}
-	out := map[string]cauteum.ProviderRefreshConfig{}
+	out := map[string]cautem.ProviderRefreshConfig{}
 	for _, credential := range prof.Credentials {
 		if credential.Refresh == nil {
 			continue
@@ -386,7 +386,7 @@ func profileRefreshConfig(prof provider.Profile, selectedEnvKeys []string) map[s
 		if primaryKey == "" {
 			continue
 		}
-		cfg := cauteum.ProviderRefreshConfig{
+		cfg := cautem.ProviderRefreshConfig{
 			CredentialKey:        primaryKey,
 			Strategy:             strategy,
 			Material:             map[string]string{},
@@ -438,7 +438,7 @@ func (a *App) ProviderUpdate(name string, fromExisting bool, credentials map[str
 	if err != nil {
 		return err
 	}
-	var rec cauteum.ProviderRecord
+	var rec cautem.ProviderRecord
 	found := false
 	for _, p := range list {
 		if p.Name == name {
@@ -509,7 +509,7 @@ func (a *App) prepareProviders(base policy.Document, basePath string, names []st
 	if err != nil {
 		dir = os.TempDir()
 	}
-	outDir := filepath.Join(dir, "cauteum", "composed-policy")
+	outDir := filepath.Join(dir, "cautem", "composed-policy")
 	if err := os.MkdirAll(outDir, 0o700); err != nil {
 		return nil, base, basePath, err
 	}
@@ -526,7 +526,7 @@ func (a *App) resolveProviderForCreate(name, gwURL string) (provider.Profile, []
 		c := a.clientFor(gwURL)
 		list, err := c.ListProviders(a.apiCtx())
 		if err != nil {
-			return provider.Profile{}, nil, "", fmt.Errorf("provider %q: gateway %s: %w (is cauteum-gateway running?)", name, gwURL, err)
+			return provider.Profile{}, nil, "", fmt.Errorf("provider %q: gateway %s: %w (is cautem-gateway running?)", name, gwURL, err)
 		}
 		for _, rec := range list {
 			if rec.Name != name {
@@ -555,7 +555,7 @@ func (a *App) resolveProviderForCreate(name, gwURL string) (provider.Profile, []
 	if err != nil {
 		hint := ""
 		if gwURL != "" {
-			hint = fmt.Sprintf(" (no gateway instance %q; create with: cauteum provider create --name %s --type <profile> — or use --provider <profile-id>)", name, name)
+			hint = fmt.Sprintf(" (no gateway instance %q; create with: cautem provider create --name %s --type <profile> — or use --provider <profile-id>)", name, name)
 		}
 		return provider.Profile{}, nil, "", fmt.Errorf("provider %q: not a gateway instance or builtin profile%s: %w", name, hint, err)
 	}
@@ -572,7 +572,7 @@ func (a *App) resolveProviderForCreate(name, gwURL string) (provider.Profile, []
 				creds[k] = v
 			}
 		}
-		if err := c.PutProvider(a.apiCtx(), cauteum.ProviderRecord{
+		if err := c.PutProvider(a.apiCtx(), cautem.ProviderRecord{
 			Name: name, Type: prof.ID, Workspace: workspace, EnvVars: keys, Credentials: creds,
 			Config: prof.DiscoverConfig(),
 		}); err != nil {
@@ -588,7 +588,7 @@ func loadBuiltinProfile(idOrPath string) (provider.Profile, error) {
 	}
 	dir := provider.FindBuiltinDir()
 	if dir == "" {
-		return provider.Profile{}, fmt.Errorf("providers dir not found (need cauteum-cli/providers)")
+		return provider.Profile{}, fmt.Errorf("providers dir not found (need cautem-cli/providers)")
 	}
 	path := filepath.Join(dir, idOrPath+".yaml")
 	return provider.LoadFile(path)
@@ -657,7 +657,7 @@ func (a *App) ProviderAttach(sandbox, providerName string) error {
 	}
 	fmt.Printf("attached %s → sandbox %s\n", providerName, sandbox)
 	if err := a.applyEffectivePolicy(sandbox); err != nil {
-		fmt.Printf("warn: could not apply effective policy (%v); run: cauteum provider effective %s > /tmp/p.yaml && cauteum policy set %s /tmp/p.yaml\n",
+		fmt.Printf("warn: could not apply effective policy (%v); run: cautem provider effective %s > /tmp/p.yaml && cautem policy set %s /tmp/p.yaml\n",
 			err, sandbox, sandbox)
 		return nil
 	}

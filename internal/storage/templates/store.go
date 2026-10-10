@@ -26,13 +26,13 @@ type Template struct {
 
 func dir() (string, error) {
 	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-		return filepath.Join(xdg, "cauteum", "templates"), nil
+		return filepath.Join(xdg, "cautem", "templates"), nil
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".config", "cauteum", "templates"), nil
+	return filepath.Join(home, ".config", "cautem", "templates"), nil
 }
 
 func pathFor(name string) (string, error) {

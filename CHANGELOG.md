@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [v0.1.6] - 2026-10-11
+
+### Changed
+
+- Rename the public CLI command, binary, installer and shell completions to `cautem`.
+
 ## [v0.1.0-beta.3] - 2026-10-10
 
 ### Added
@@ -14,7 +20,7 @@
 
 - Resolve Display, Driver, Gateway, Providers, Proxy, Runtime and SDK from published beta tags; CI checks out those exact tag commits.
 - Build sandbox agent images in CI from a digest-identical public ECR mirror to avoid Docker Hub rate limits.
-- Resolve `cauteum-core` v0.1.0-beta.2 and `slogx` v0.1.0-beta.1 from published tags.
+- Resolve `cautem-core` v0.1.0-beta.2 and `slogx` v0.1.0-beta.1 from published tags.
 
 ### Fixed
 
@@ -66,9 +72,9 @@
 
 ### Changed
 
-- Prefer `CAUTEUM_*` env over legacy `OPENSHELL_*` when both are set.
+- Prefer `CAUTEM_*` env over legacy `OPENSHELL_*` when both are set.
 - Doctor warns on KEK migration need and binary-scoped identity limits on Docker Desktop.
 
 ### Fixed
 
-- GoReleaser archive helpers use `strip_parent` so paths land at `libexec/cauteum/linux-<arch>/`.
+- GoReleaser archive helpers use `strip_parent` so paths land at `libexec/cautem/linux-<arch>/`.

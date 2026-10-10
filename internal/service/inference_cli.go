@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cautem/cauteum-cli/internal/osargs"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/osargs"
+	"github.com/cautem/cautem-sdk/go/cautem"
 )
 
 // InferenceRouteGet prints the gateway inference route.
@@ -38,7 +38,7 @@ func (a *App) InferenceRouteSet(opt osargs.InferenceSet) error {
 	}
 	ctx, cancel := a.withTimeout(TimeoutAPILong)
 	defer cancel()
-	route := cauteum.InferenceRoute{
+	route := cautem.InferenceRoute{
 		Provider:   opt.Provider,
 		Model:      opt.Model,
 		TimeoutSec: opt.TimeoutSec,

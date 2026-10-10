@@ -1,5 +1,5 @@
-# cauteum bash completions
-_cauteum() {
+# cautem bash completions
+_cautem() {
     local current_word="${COMP_WORDS[COMP_CWORD]}"
     local -a commands=(
         version sandbox sb exec provider profile policy pol gateway gw logs lg term status
@@ -14,4 +14,4 @@ _cauteum() {
     fi
 }
 
-complete -F _cauteum cauteum
+complete -F _cautem cautem

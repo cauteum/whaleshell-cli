@@ -2,13 +2,13 @@
 *.test
 *.out
 /osg
-/cauteum-init
-/cauteum-gateway
+/cautem-init
+/cautem-gateway
 /osg-linux-*
 /osg-darwin-*
 /osg-windows-*
 .DS_Store
-/cauteum-gateway-*
-/cauteum-cli/
+/cautem-gateway-*
+/cautem-cli/
 /build/
 /dist/
