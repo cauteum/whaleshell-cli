@@ -8,7 +8,7 @@ require (
 	github.com/NVIDIA/OpenShell/sdk/go v0.0.0-20260909233434-a0814443f19c
 	github.com/cautem/cautem-core v0.1.6
 	github.com/cautem/cautem-display v0.1.6
-	github.com/cautem/cautem-driver v0.1.6
+	github.com/cautem/cautem-driver v0.1.7
 	github.com/cautem/cautem-gateway v0.1.6
 	github.com/cautem/cautem-providers v0.1.6
 	github.com/cautem/cautem-proxy v0.1.6
