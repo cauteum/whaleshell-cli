@@ -86,7 +86,7 @@ jobs:
         with:
           repository: cautem/cauteum-gateway
           path: cauteum-gateway
-          ref: ffc40d18461932581750e96504d2e0c939b834ff
+          ref: ca604feb393719a50a5521881e7bfd9a60231042
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -213,7 +213,7 @@ jobs:
         with:
           repository: cautem/cauteum-gateway
           path: cauteum-gateway
-          ref: ffc40d18461932581750e96504d2e0c939b834ff
+          ref: ca604feb393719a50a5521881e7bfd9a60231042
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -340,7 +340,7 @@ jobs:
         with:
           repository: cautem/cauteum-gateway
           path: cauteum-gateway
-          ref: ffc40d18461932581750e96504d2e0c939b834ff
+          ref: ca604feb393719a50a5521881e7bfd9a60231042
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -465,7 +465,7 @@ jobs:
         with:
           repository: cautem/cauteum-gateway
           path: cauteum-gateway
-          ref: ffc40d18461932581750e96504d2e0c939b834ff
+          ref: ca604feb393719a50a5521881e7bfd9a60231042
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -567,7 +567,7 @@ jobs:
         with:
           repository: cautem/cauteum-gateway
           path: cauteum-gateway
-          ref: ffc40d18461932581750e96504d2e0c939b834ff
+          ref: ca604feb393719a50a5521881e7bfd9a60231042
 
       - name: Checkout cauteum-runtime candidate
         uses: actions/checkout@v4
