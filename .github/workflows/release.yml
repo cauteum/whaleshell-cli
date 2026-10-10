@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing tag to rebuild (e.g. v0.1.6)"
+        description: "Existing tag to rebuild (e.g. v0.1.7)"
         required: false
 
 permissions:
@@ -45,7 +45,7 @@ jobs:
           declare -A MODULES=(
             [cautem-core]=cautem/cautem-core@v0.1.6
             [cautem-display]=cautem/cautem-display@v0.1.6
-            [cautem-driver]=cautem/cautem-driver@v0.1.6
+            [cautem-driver]=cautem/cautem-driver@v0.1.7
             [cautem-providers]=cautem/cautem-providers@v0.1.6
             [cautem-proxy]=cautem/cautem-proxy@v0.1.6
             [cautem-runtime]=cautem/cautem-runtime@v0.1.6
@@ -84,7 +84,11 @@ jobs:
               if [[ -d "$d" ]]; then
                 echo "  github.com/cautem/${d} v0.1.0-alpha.1 => ./$d"
                 echo "  github.com/cautem/${d} v0.1.0-alpha.2 => ./$d"
-                echo "  github.com/cautem/${d} v0.1.6 => ./$d"
+                if [[ "$d" == "cautem-driver" ]]; then
+                  echo "  github.com/cautem/${d} v0.1.7 => ./$d"
+                else
+                  echo "  github.com/cautem/${d} v0.1.6 => ./$d"
+                fi
               fi
             done
             if [[ -d slogx ]]; then
