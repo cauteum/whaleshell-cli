@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [v0.1.8] - 2026-10-11
+
+### Fixed
+
+- Pin the v0.1.7 driver module in the GoReleaser workspace so release binaries include the default sandbox image fix.
+
 ## [v0.1.7] - 2026-10-11
 
 ### Changed
