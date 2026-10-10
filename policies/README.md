@@ -17,6 +17,6 @@ cauteum follows the same idea with a thin CLI tree:
 
 - `default.yaml` — create-without-thinking baseline (like OpenShell default, but inference-oriented)
 - `cursor.yaml` — one first-class agent recipe (also copied by `cauteum init --agent cursor`)
-- Further agents: [`../examples/`](../examples/) recipes and [provider profiles](https://cauteum-haven.github.io/guides/provider-profiles/) (`github`, `nvidia`, …)
+- Further agents: [`../examples/`](../examples/) recipes and [provider profiles](https://cautem.github.io/cauteum-haven.github.io/guides/provider-profiles/) (`github`, `nvidia`, …)
 
 You do not need more files under `policies/` unless you want another first-class `cauteum init --agent …` target.

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Minimal BYOC image — run any Linux container as an cauteum sandbox.
-# Image requirements: https://cauteum-haven.github.io/reference/images/
+# Image requirements: https://cautem.github.io/cauteum-haven.github.io/reference/images/
 
 FROM python:3.13-slim
 

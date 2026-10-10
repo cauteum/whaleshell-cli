@@ -24,7 +24,7 @@ runtime_dir="${CAUTEUM_RUNTIME_DIR:-${cli_dir}/../cauteum-runtime}"
 mkdir -p "$out"
 out="$(cd "$out" && pwd)"
 
-ldflags="-s -w -X github.com/cauteum-haven/cauteum-cli/internal/service.BuildVersion=${version}"
+ldflags="-s -w -X github.com/cautem/cauteum-cli/internal/service.BuildVersion=${version}"
 for arch in "${arches[@]}"; do
   dst="${out}/linux-${arch}"
   rm -rf "$dst"

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/cauteum-haven/cauteum-driver/driver"
+	"github.com/cautem/cauteum-driver/driver"
 )
 
 // Linux helper binaries mounted into sandboxes and proxy sidecars. Release
@@ -80,15 +80,15 @@ func resolveLinuxHelper(ctx context.Context, name, module string, build func(con
 }
 
 func ensureProxyBin(ctx context.Context) (string, error) {
-	return resolveLinuxHelper(ctx, helperCLI, "github.com/cauteum-haven/cauteum-cli", driver.EnsureLinuxCLI)
+	return resolveLinuxHelper(ctx, helperCLI, "github.com/cautem/cauteum-cli", driver.EnsureLinuxCLI)
 }
 
 func ensureInitBin(ctx context.Context) (string, error) {
-	return resolveLinuxHelper(ctx, helperInit, "github.com/cauteum-haven/cauteum-runtime", driver.EnsureLinuxInit)
+	return resolveLinuxHelper(ctx, helperInit, "github.com/cautem/cauteum-runtime", driver.EnsureLinuxInit)
 }
 
 func ensureSSHDBin(ctx context.Context) (string, error) {
-	return resolveLinuxHelper(ctx, helperSSHD, "github.com/cauteum-haven/cauteum-runtime", driver.EnsureLinuxSSHD)
+	return resolveLinuxHelper(ctx, helperSSHD, "github.com/cautem/cauteum-runtime", driver.EnsureLinuxSSHD)
 }
 
 // helperStatus reports where linux helpers come from, without building.
@@ -105,7 +105,7 @@ func helperStatus() string {
 	if len(missing) == 0 {
 		return "bundled (" + dir + ")"
 	}
-	if _, err := findModuleDir("github.com/cauteum-haven/cauteum-runtime"); err == nil {
+	if _, err := findModuleDir("github.com/cautem/cauteum-runtime"); err == nil {
 		if _, err := exec.LookPath("go"); err == nil {
 			return "source checkout (cross-compiled on demand)"
 		}

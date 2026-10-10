@@ -3,7 +3,7 @@
 Use builtin Anthropic + OpenAI presets **or** a `claude-code` provider instance.
 API keys stay on the host / gateway; the sandbox sees `cauteum:resolve:env:…` placeholders.
 
-**Запуск + providers:** [профили провайдеров](https://cauteum-haven.github.io/ru/guides/provider-profiles/).
+**Запуск + providers:** [профили провайдеров](https://cautem.github.io/cauteum-haven.github.io/ru/guides/provider-profiles/).
 
 ## A. Inference presets in policy (no gateway provider)
 
@@ -34,4 +34,4 @@ cauteum sandbox exec agent-demo -- env | grep -E 'ANTHROPIC|OPENAI'
 # expect: ANTHROPIC_API_KEY=cauteum:resolve:env:ANTHROPIC_API_KEY
 ```
 
-Custom host model (vLLM): `inference.profiles` — see [provider profiles](https://cauteum-haven.github.io/guides/provider-profiles/).
+Custom host model (vLLM): `inference.profiles` — see [provider profiles](https://cautem.github.io/cauteum-haven.github.io/guides/provider-profiles/).

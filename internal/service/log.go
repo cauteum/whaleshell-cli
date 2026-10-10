@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/logger"
-	"github.com/cauteum-haven/slogx"
+	"github.com/cautem/cauteum-cli/internal/logger"
+	"github.com/cautem/slogx"
 )
 
 // opLogger returns a context logger tagged with a stable operation name

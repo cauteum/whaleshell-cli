@@ -4,7 +4,7 @@ Run Ollama on the host, reach it from the sandbox via `host.cauteum.internal:114
 
 Policy: `filesystem_policy` / `network_policies` + `inference.providers: [local]` — see `policy.yaml`.
 
-**Запуск CLI:** [профили провайдеров](https://cauteum-haven.github.io/ru/guides/provider-profiles/).
+**Запуск CLI:** [профили провайдеров](https://cautem.github.io/cauteum-haven.github.io/ru/guides/provider-profiles/).
 
 ```bash
 export GOWORK=$PWD/go.work
@@ -21,4 +21,4 @@ cauteum sandbox create --name ollama-demo \
 cauteum sandbox exec ollama-demo -- curl -s http://host.cauteum.internal:11434/api/tags
 ```
 
-No managed URL rewrite — use the native Ollama HTTP API. See [provider profiles](https://cauteum-haven.github.io/guides/provider-profiles/).
+No managed URL rewrite — use the native Ollama HTTP API. See [provider profiles](https://cautem.github.io/cauteum-haven.github.io/guides/provider-profiles/).

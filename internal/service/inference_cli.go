@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/osargs"
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-cli/internal/osargs"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
 )
 
 // InferenceRouteGet prints the gateway inference route.

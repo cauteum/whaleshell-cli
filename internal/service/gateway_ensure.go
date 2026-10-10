@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cauteum-haven/cauteum-core/defaults"
-	"github.com/cauteum-haven/slogx"
+	"github.com/cautem/cauteum-core/defaults"
+	"github.com/cautem/slogx"
 )
 
 const localGatewayName = "local"

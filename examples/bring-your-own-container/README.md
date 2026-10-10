@@ -2,7 +2,7 @@
 
 Run a sandbox with a **custom** image (OpenShell-style BYOC). cauteum does not require
 its first-party agent layers — any standard Linux image works if it meets the
-contract in the [image reference](https://cauteum-haven.github.io/reference/images/).
+contract in the [image reference](https://cautem.github.io/cauteum-haven.github.io/reference/images/).
 
 ## Quick start
 
@@ -42,4 +42,4 @@ cauteum sandbox create --name byoc --from byoc --workspace . --policy cauteum-cl
 | No distroless / `FROM scratch` | Need a real userland |
 | Pass command after `--` | Image CMD is replaced by `cauteum-init` |
 
-First-party images (`--from cursor`, …): build locally or `task images:pull` / GHCR — [image reference](https://cauteum-haven.github.io/reference/images/).
+First-party images (`--from cursor`, …): build locally or `task images:pull` / GHCR — [image reference](https://cautem.github.io/cauteum-haven.github.io/reference/images/).

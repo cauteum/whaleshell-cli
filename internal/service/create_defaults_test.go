@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cauteum-haven/cauteum-cli/internal/storage/templates"
+	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
+	"github.com/cautem/cauteum-cli/internal/storage/templates"
 )
 
 func TestApplyCreateDefaultsFromEnv(t *testing.T) {

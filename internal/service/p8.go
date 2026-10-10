@@ -6,10 +6,10 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cauteum-haven/cauteum-driver/driver"
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
-	"github.com/cauteum-haven/slogx"
+	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
+	"github.com/cautem/cauteum-driver/driver"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/slogx"
 )
 
 // SandboxStop stops a sandbox without deleting network/volume.

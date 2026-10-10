@@ -12,8 +12,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/service"
-	"github.com/cauteum-haven/cauteum-driver/driver"
+	"github.com/cautem/cauteum-cli/internal/service"
+	"github.com/cautem/cauteum-driver/driver"
 )
 
 var (

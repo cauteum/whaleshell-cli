@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cauteum-haven/cauteum-core/defaults"
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-core/defaults"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
 )
 
 type providerEndpointStub struct{ record cauteum.ProviderRecord }

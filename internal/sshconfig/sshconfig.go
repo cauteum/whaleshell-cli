@@ -10,7 +10,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/securefile"
+	"github.com/cautem/cauteum-cli/internal/securefile"
 )
 
 // AliasPrefix names managed hosts (OpenShell: openshell-<name>).

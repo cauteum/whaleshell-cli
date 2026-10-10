@@ -15,8 +15,8 @@ import (
 
 	datamodelv1 "github.com/NVIDIA/OpenShell/sdk/go/proto/datamodelv1"
 	openshellv1 "github.com/NVIDIA/OpenShell/sdk/go/proto/openshellv1"
-	"github.com/cauteum-haven/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"os"
 
-	core "github.com/cauteum-haven/cauteum-core"
-	"github.com/cauteum-haven/cauteum-driver/driver"
-	"github.com/cauteum-haven/cauteum-runtime/agentconfig"
+	core "github.com/cautem/cauteum-core"
+	"github.com/cautem/cauteum-driver/driver"
+	"github.com/cautem/cauteum-runtime/agentconfig"
 )
 
 type guestDriver interface {

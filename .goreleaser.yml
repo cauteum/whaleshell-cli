@@ -27,7 +27,7 @@ builds:
         goarch: arm64
     ldflags:
       - -s -w
-      - -X github.com/cauteum-haven/cauteum-cli/internal/service.BuildVersion={{.Version}}
+      - -X github.com/cautem/cauteum-cli/internal/service.BuildVersion={{.Version}}
 
   - id: cauteum-gateway
     dir: ../cauteum-gateway
@@ -118,16 +118,16 @@ release:
     ## Install
 
     ```bash
-    curl -LsSf https://raw.githubusercontent.com/cauteum-haven/cauteum-cli/main/install.sh | sh
+    curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh | sh
     ```
 
     Pin a tag:
 
     ```bash
-    curl -LsSf https://raw.githubusercontent.com/cauteum-haven/cauteum-cli/main/install.sh | CAUTEUM_VERSION={{ .Tag }} sh
+    curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh | CAUTEUM_VERSION={{ .Tag }} sh
     ```
 
-    **Alpha / pre-release:** APIs may change. See the development and release guide at cauteum-haven.github.io/reference/development/.
+    **Alpha / pre-release:** APIs may change. See the development and release guide at cautem.github.io/cauteum-haven.github.io/reference/development/.
 
 snapshot:
   version_template: "{{ .Version }}-next"

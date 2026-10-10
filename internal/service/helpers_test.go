@@ -29,12 +29,12 @@ func TestResolveLinuxHelperPinnedDir(t *testing.T) {
 	built := false
 	build := func(context.Context, string) (string, error) { built = true; return "", nil }
 
-	got, err := resolveLinuxHelper(context.Background(), helperSSHD, "github.com/cauteum-haven/cauteum-runtime", build)
+	got, err := resolveLinuxHelper(context.Background(), helperSSHD, "github.com/cautem/cauteum-runtime", build)
 	if err != nil || got != want || built {
 		t.Fatalf("got %q, %v (built=%v); want %q", got, err, built, want)
 	}
 
-	_, err = resolveLinuxHelper(context.Background(), helperInit, "github.com/cauteum-haven/cauteum-runtime", build)
+	_, err = resolveLinuxHelper(context.Background(), helperInit, "github.com/cautem/cauteum-runtime", build)
 	if err == nil || built || !strings.Contains(err.Error(), EnvHelpersDir) {
 		t.Fatalf("pinned dir must not fall back to source builds: err=%v built=%v", err, built)
 	}

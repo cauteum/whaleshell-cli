@@ -5,21 +5,21 @@
   Create, harden, and operate policy-bound sandboxes — Cursor, Claude, Codex, and BYOC.
 </p>
 <p align="center">
-  <a href="https://github.com/cauteum-haven/cauteum-cli/actions/workflows/ci.yml"><img src="https://github.com/cauteum-haven/cauteum-cli/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/cauteum-haven/cauteum-cli/releases"><img src="https://img.shields.io/github/v/release/cauteum-haven/cauteum-cli?include_prereleases&sort=semver&label=release" alt="release"></a>
-  <a href="https://img.shields.io/badge/status-v0.1.4-blue"><img src="https://img.shields.io/badge/status-v0.1.4-blue" alt="v0.1.4"></a>
+  <a href="https://github.com/cautem/cauteum-cli/actions/workflows/ci.yml"><img src="https://github.com/cautem/cauteum-cli/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/cautem/cauteum-cli/releases"><img src="https://img.shields.io/github/v/release/cautem/cauteum-cli?include_prereleases&sort=semver&label=release" alt="release"></a>
+  <a href="https://img.shields.io/badge/status-v0.1.5-blue"><img src="https://img.shields.io/badge/status-v0.1.5-blue" alt="v0.1.5"></a>
   <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/License-Apache--2.0-blue.svg" alt="License"></a>
-  <a href="https://github.com/cauteum-haven/cauteum-cli"><img src="https://img.shields.io/badge/Go-1.27+-00ADD8?logo=go" alt="Go Version"></a>
+  <a href="https://github.com/cautem/cauteum-cli"><img src="https://img.shields.io/badge/Go-1.27+-00ADD8?logo=go" alt="Go Version"></a>
 </p>
 <p align="center">
-  <sub>Part of the <a href="https://github.com/cauteum-haven">cauteum / cauteum</a> ecosystem</sub>
+  <sub>Part of the <a href="https://github.com/cautem">cauteum / cauteum</a> ecosystem</sub>
 </p>
 
 ---
 
 ## Overview
 
-The [quick start](https://cauteum-haven.github.io/get-started/) contains the supported installation and first-sandbox flow.
+The [quick start](https://cautem.github.io/cauteum-haven.github.io/get-started/) contains the supported installation and first-sandbox flow.
 
 **cauteum-cli** is the user-facing `cauteum` binary for the cauteum ecosystem: sandbox lifecycle, policy checks, provider attach, gateway selection, live logs, and agent images.
 
@@ -38,14 +38,14 @@ The [quick start](https://cauteum-haven.github.io/get-started/) contains the sup
 
 ## Installation
 
-Install the current release (`v0.1.4`) into `~/.local/bin`:
+Install the current release (`v0.1.5`) into `~/.local/bin`:
 
 ```bash
-curl -LsSf https://raw.githubusercontent.com/cauteum-haven/cauteum-cli/main/install.sh \
-  | CAUTEUM_VERSION=v0.1.4 sh
+curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh \
+  | CAUTEUM_VERSION=v0.1.5 sh
 ```
 
-From source in the [multi-repo workspace](https://github.com/cauteum-haven):
+From source in the [multi-repo workspace](https://github.com/cautem):
 
 ```bash
 go build -C cauteum-cli -o ../cauteum ./cmd/cauteum
@@ -55,7 +55,7 @@ go build -C cauteum-cli -o ../cauteum-console ./cmd/cauteum-console
 
 **Requirements:** Docker or Podman. Go 1.27+ only if building from source.
 
-`v0.1.4` is the current stable numbered release. It builds from published module dependencies; OpenShell behavioral compatibility remains partial. See [development and releases](https://cauteum-haven.github.io/reference/development/) and the [compatibility status](https://cauteum-haven.github.io/reference/openshell-compatibility/).
+`v0.1.5` is the current stable numbered release. It builds from published module dependencies; OpenShell behavioral compatibility remains partial. See [development and releases](https://cautem.github.io/cauteum-haven.github.io/reference/development/) and the [compatibility status](https://cautem.github.io/cauteum-haven.github.io/reference/openshell-compatibility/).
 
 ---
 
@@ -133,9 +133,9 @@ Runnable recipes live in [`examples/`](./examples/).
 | Resource | Link |
 |----------|------|
 | Roadmap | [ROADMAP.md](./ROADMAP.md) |
-| Organization | [https://github.com/cauteum](https://github.com/cauteum-haven) |
-| Organization overview | [github.com/cauteum](https://github.com/cauteum-haven) |
-| pkg.go.dev | [`github.com/cauteum-haven/cauteum-cli`](https://pkg.go.dev/github.com/cauteum-haven/cauteum-cli) |
+| Organization | [https://github.com/cautem](https://github.com/cautem) |
+| Organization overview | [github.com/cautem](https://github.com/cautem) |
+| pkg.go.dev | [`github.com/cautem/cauteum-cli`](https://pkg.go.dev/github.com/cautem/cauteum-cli) |
 
 ## License
 

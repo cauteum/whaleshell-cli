@@ -5,13 +5,13 @@
 # Install the cauteum CLI from a GitHub release (OpenShell-style one-liner).
 #
 # Usage:
-#   curl -LsSf https://raw.githubusercontent.com/cauteum-haven/cauteum-cli/main/install.sh | sh
+#   curl -LsSf https://raw.githubusercontent.com/cautem/cauteum-cli/main/install.sh | sh
 #
 # Environment:
 #   CAUTEUM_VERSION      Release tag (default: latest published release;
 #                           "nightly" is available only when manually published)
 #   CAUTEUM_INSTALL_DIR  Install directory (default: ~/.local/bin)
-#   CAUTEUM_REPO         Override owner/name (default: cauteum-haven/cauteum-cli)
+#   CAUTEUM_REPO         Override owner/name (default: cautem/cauteum-cli)
 #   CAUTEUM_RELEASE_URL  Base URL holding <tag>/<archive> (mirror / air-gapped;
 #                           default: https://github.com/<repo>/releases/download)
 #

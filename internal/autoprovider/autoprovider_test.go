@@ -3,7 +3,7 @@ package autoprovider_test
 import (
 	"testing"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/autoprovider"
+	"github.com/cautem/cauteum-cli/internal/autoprovider"
 )
 
 func TestMergeOffIgnoresInferred(t *testing.T) {

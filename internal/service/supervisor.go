@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cauteum-haven/cauteum-core/policy"
-	"github.com/cauteum-haven/cauteum-driver/driver"
-	"github.com/cauteum-haven/cauteum-providers/provider"
-	"github.com/cauteum-haven/cauteum-proxy/proxy"
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
+	"github.com/cautem/cauteum-core/policy"
+	"github.com/cautem/cauteum-driver/driver"
+	"github.com/cautem/cauteum-providers/provider"
+	"github.com/cautem/cauteum-proxy/proxy"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
 )
 
 // attachSupervisor wires the proxy sidecar as the sandbox supervisor

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/service"
+	"github.com/cautem/cauteum-cli/internal/service"
 )
 
 func TestHelpNested(t *testing.T) {

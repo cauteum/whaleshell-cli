@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cauteum-haven/cauteum-runtime/idp"
+	"github.com/cautem/cauteum-runtime/idp"
 )
 
 func TestNewRejectsPublicNetworkHTTP(t *testing.T) {

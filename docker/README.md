@@ -1,7 +1,7 @@
 # cauteum-cli/docker/
 
 Agent sandbox images for the `cauteum` CLI (`--from cursor|claude|codex`).  
-Runtime base (`cauteum-sandbox:local` / GHCR `:cli`) is built from the [runtime image sources](https://github.com/cauteum-haven/cauteum-runtime/tree/main/images/sandbox) via `task runtime:image:cli` in the multi-repo workspace.
+Runtime base (`cauteum-sandbox:local` / GHCR `:cli`) is built from the [runtime image sources](https://github.com/cautem/cauteum-runtime/tree/main/images/sandbox) via `task runtime:image:cli` in the multi-repo workspace.
 
 | Path | Tag | Contents |
 |------|-----|----------|
@@ -9,7 +9,7 @@ Runtime base (`cauteum-sandbox:local` / GHCR `:cli`) is built from the [runtime 
 | [`agents/claude`](./agents/claude/) | `cauteum-sandbox:claude` | + Claude Code CLI |
 | [`agents/codex`](./agents/codex/) | `cauteum-sandbox:codex` | + OpenAI Codex CLI |
 
-Published images and BYOC: [image reference](https://cauteum-haven.github.io/reference/images/).
+Published images and BYOC: [image reference](https://cautem.github.io/cauteum-haven.github.io/reference/images/).
 
 ## Build
 

@@ -4,8 +4,8 @@ Goal: an agent **inside** the sandbox can `git push` / `gh` to your org.
 The host only seeds the token once; the guest sees `cauteum:resolve:env:GITHUB_TOKEN`,
 and the sidecar rewrites it on egress.
 
-**Общий запуск + create:** [профили провайдеров](https://cauteum-haven.github.io/ru/guides/provider-profiles/).  
-**Cursor+Git:** [Docker](https://cauteum-haven.github.io/ru/providers/docker/).
+**Общий запуск + create:** [профили провайдеров](https://cautem.github.io/cauteum-haven.github.io/ru/guides/provider-profiles/)\
+**Cursor+Git:** [Docker](https://cautem.github.io/cauteum-haven.github.io/ru/providers/docker/).
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ and the sidecar rewrites it on egress.
 - Go toolchain + this workspace (`go.work`)
 - GitHub PAT with **`repo`** (classic) or fine-grained **Contents: Read and write**
   on the target repos
-- Empty (or existing) repos under the org, e.g. `cauteum-haven/cauteum-cli`
+- Empty (or existing) repos under the org, e.g. `cautem/cauteum-cli`
 
 ## 1. Build CLI + gateway
 
@@ -109,7 +109,7 @@ Repos must exist on GitHub. From **inside** the sandbox:
 
 ```bash
 cd /workspace/cauteum-cli
-git remote -v   # should be https://github.com/cauteum-haven/cauteum-cli.git
+git remote -v   # should be https://github.com/cautem/cauteum-cli.git
 git push -u origin main
 ```
 
@@ -164,7 +164,7 @@ Typical loop:
 
 Create-repo allows in our write base policy:
 
-- `POST /orgs/cauteum/repos` — `gh repo create cauteum-haven/cauteum-cli`
+- `POST /orgs/cauteum/repos` — `gh repo create cautem/cauteum-cli`
 - `POST /user/repos` — user-owned `gh repo create cauteum-cli`
 - then `git-receive-pack` for push
 
@@ -175,10 +175,10 @@ Token still needs GitHub permission (`repo` / admin on org). Policy only admits 
 ```bash
 ./cauteum sandbox exec push -- bash
 # inside:
-gh repo create cauteum-haven/cauteum-cli --private --source=/workspace/cauteum-cli --remote=origin --push
+gh repo create cautem/cauteum-cli --private --source=/workspace/cauteum-cli --remote=origin --push
 # or:
 gh api -X POST /orgs/cauteum/repos -f name=cauteum-cli -F private=true
-cd /workspace/cauteum-cli && git remote add origin https://github.com/cauteum-haven/cauteum-cli.git
+cd /workspace/cauteum-cli && git remote add origin https://github.com/cautem/cauteum-cli.git
 git push -u origin main
 ```
 

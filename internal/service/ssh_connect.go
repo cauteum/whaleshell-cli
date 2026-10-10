@@ -14,11 +14,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/sshconfig"
-	"github.com/cauteum-haven/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cauteum-haven/cauteum-core/defaults"
-	"github.com/cauteum-haven/cauteum-core/relayproto"
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-cli/internal/sshconfig"
+	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
+	"github.com/cautem/cauteum-core/defaults"
+	"github.com/cautem/cauteum-core/relayproto"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/term"
 )

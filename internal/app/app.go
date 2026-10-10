@@ -4,8 +4,8 @@ package app
 import (
 	"context"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/app/cli"
-	"github.com/cauteum-haven/cauteum-cli/internal/logger"
+	"github.com/cautem/cauteum-cli/internal/app/cli"
+	"github.com/cautem/cauteum-cli/internal/logger"
 )
 
 // Run initializes logging and executes the CLI.

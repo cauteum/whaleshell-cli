@@ -21,8 +21,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cauteum-haven/cauteum-runtime/idp"
-	cauteum "github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-runtime/idp"
+	cauteum "github.com/cautem/cauteum-sdk/go/cauteum"
 )
 
 const (

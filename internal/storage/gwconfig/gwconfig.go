@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cauteum-haven/cauteum-cli/internal/securefile"
-	"github.com/cauteum-haven/cauteum-core/defaults"
+	"github.com/cautem/cauteum-cli/internal/securefile"
+	"github.com/cautem/cauteum-core/defaults"
 	"gopkg.in/yaml.v3"
 )
 

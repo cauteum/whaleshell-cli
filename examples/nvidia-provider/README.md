@@ -2,7 +2,7 @@
 
 Builtin profile: `cauteum-providers/profiles/nvidia.yaml` (also via `cauteum provider profile show nvidia`).
 
-**Запуск + create:** [профили провайдеров](https://cauteum-haven.github.io/ru/guides/provider-profiles/).
+**Запуск + create:** [профили провайдеров](https://cautem.github.io/cauteum-haven.github.io/ru/guides/provider-profiles/).
 
 ```bash
 export GOWORK=$PWD/go.work
@@ -24,4 +24,4 @@ cauteum sandbox exec nim -- env | grep NVIDIA || true
 # expect: NVIDIA_API_KEY=cauteum:resolve:env:NVIDIA_API_KEY
 ```
 
-См. [профили провайдеров](https://cauteum-haven.github.io/ru/guides/provider-profiles/).
+См. [профили провайдеров](https://cautem.github.io/cauteum-haven.github.io/ru/guides/provider-profiles/).

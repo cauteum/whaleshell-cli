@@ -13,7 +13,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/cauteum-haven/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cauteum-sdk/go/cauteum"
 )
 
 // RuleListFilter lists policy.local proposals (gateway) with local fallback.

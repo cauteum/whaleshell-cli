@@ -1,4 +1,4 @@
-module github.com/cauteum-haven/cauteum-cli
+module github.com/cautem/cauteum-cli
 
 go 1.27.0
 
@@ -6,15 +6,15 @@ toolchain go1.27.2
 
 require (
 	github.com/NVIDIA/OpenShell/sdk/go v0.0.0-20260909233434-a0814443f19c
-	github.com/cauteum-haven/cauteum-core v0.1.4
-	github.com/cauteum-haven/cauteum-display v0.1.4
-	github.com/cauteum-haven/cauteum-driver v0.1.4
-	github.com/cauteum-haven/cauteum-gateway v0.1.4
-	github.com/cauteum-haven/cauteum-providers v0.1.4
-	github.com/cauteum-haven/cauteum-proxy v0.1.4
-	github.com/cauteum-haven/cauteum-runtime v0.1.4
-	github.com/cauteum-haven/cauteum-sdk v0.1.4
-	github.com/cauteum-haven/slogx v0.1.2
+	github.com/cautem/cauteum-core v0.1.5
+	github.com/cautem/cauteum-display v0.1.5
+	github.com/cautem/cauteum-driver v0.1.5
+	github.com/cautem/cauteum-gateway v0.1.5
+	github.com/cautem/cauteum-providers v0.1.5
+	github.com/cautem/cauteum-proxy v0.1.5
+	github.com/cautem/cauteum-runtime v0.1.5
+	github.com/cautem/cauteum-sdk v0.1.5
+	github.com/cautem/slogx v0.1.3
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/pelletier/go-toml/v2 v2.4.3

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	controlv1 "github.com/cauteum-haven/cauteum-gateway/api/gen/cauteum/control/v1"
+	controlv1 "github.com/cautem/cauteum-gateway/api/gen/cauteum/control/v1"
 	"google.golang.org/grpc"
 )
 
