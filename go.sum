@@ -8,8 +8,8 @@ github.com/cautem/cautem-core v0.1.6 h1:ccSTaDPoA0RCR2OBrjc9UqdxFdUk4tgG55ej0Pzl
 github.com/cautem/cautem-core v0.1.6/go.mod h1:b+vEHGf2Mtyt9kJE4c2oknU0s/uXfV/z0CyzulntLlg=
 github.com/cautem/cautem-display v0.1.6 h1:vS2XU0qS8VPYOIlJP1iFgPYMMCIjB5lGXjoINAp0MKY=
 github.com/cautem/cautem-display v0.1.6/go.mod h1:1ozXr/ElRhneCVmzUXxBfuj00YKQkAg1Lv/IEV74bLg=
-github.com/cautem/cautem-driver v0.1.6 h1:eP4VRAdiYjmKKAxZjr/ORpI3kIbO0XtviADzokNhv4o=
-github.com/cautem/cautem-driver v0.1.6/go.mod h1:jLguWClbmM8LJucIYgF0KYQrl2sfgs9uj9hRs2F7z+Y=
+github.com/cautem/cautem-driver v0.1.7 h1:JWou60BU0o/0mg9q4V8msJ6Rp8sGRXWZG9sA/i+u3Fc=
+github.com/cautem/cautem-driver v0.1.7/go.mod h1:jLguWClbmM8LJucIYgF0KYQrl2sfgs9uj9hRs2F7z+Y=
 github.com/cautem/cautem-gateway v0.1.6 h1:wGqOKLGXYs+uE24T72ZtpMsMO5Xnab250jSCxuaS4+M=
 github.com/cautem/cautem-gateway v0.1.6/go.mod h1:oUB18rgCh7wNMCQgDZAYj8NPv/JYvWmKSFMRHp7sfQ0=
 github.com/cautem/cautem-providers v0.1.6 h1:u21jsCaowuiG1uOcVAy/do7xvbj1GgQpgOaSv7lj3Xo=

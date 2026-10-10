@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [v0.1.7] - 2026-10-11
+
+### Changed
+
+- Update cautem-driver to v0.1.7 so first-run sandboxes use the published cautem base when no local image is cached.
+
 ## [v0.1.6] - 2026-10-11
 
 ### Changed
