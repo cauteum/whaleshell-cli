@@ -79,14 +79,14 @@ jobs:
         with:
           repository: cautem/cautem-sdk
           path: cautem-sdk
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout cautem-gateway Control API
         uses: actions/checkout@v4
         with:
           repository: cautem/cautem-gateway
           path: cautem-gateway
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -206,14 +206,14 @@ jobs:
         with:
           repository: cautem/cautem-sdk
           path: cautem-sdk
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout cautem-gateway Control API
         uses: actions/checkout@v4
         with:
           repository: cautem/cautem-gateway
           path: cautem-gateway
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -333,14 +333,14 @@ jobs:
         with:
           repository: cautem/cautem-sdk
           path: cautem-sdk
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout cautem-gateway Control API
         uses: actions/checkout@v4
         with:
           repository: cautem/cautem-gateway
           path: cautem-gateway
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -458,14 +458,14 @@ jobs:
         with:
           repository: cautem/cautem-sdk
           path: cautem-sdk
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout cautem-gateway Control API
         uses: actions/checkout@v4
         with:
           repository: cautem/cautem-gateway
           path: cautem-gateway
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout slogx
         uses: actions/checkout@v4
@@ -567,7 +567,7 @@ jobs:
         with:
           repository: cautem/cautem-gateway
           path: cautem-gateway
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout cautem-runtime candidate
         uses: actions/checkout@v4
@@ -581,7 +581,7 @@ jobs:
         with:
           repository: cautem/cautem-sdk
           path: cautem-sdk
-          ref: release/v0.1.6
+          ref: v0.1.6
 
       - name: Checkout sibling modules at published tags
         run: |
