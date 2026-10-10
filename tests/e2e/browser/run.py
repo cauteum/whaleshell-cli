@@ -41,11 +41,11 @@ def main() -> None:
     environment = os.environ.copy()
     environment["GOWORK"] = str(root / "go.work")
     processes: list[subprocess.Popen[bytes]] = []
-    with tempfile.TemporaryDirectory(prefix="cauteum-console-e2e-") as data_dir:
+    with tempfile.TemporaryDirectory(prefix="cautem-console-e2e-") as data_dir:
         try:
             gateway = subprocess.Popen(
                 [
-                    "go", "-C", str(root / "cauteum-gateway"), "run", "./cmd/cauteum-gateway",
+                    "go", "-C", str(root / "cautem-gateway"), "run", "./cmd/cautem-gateway",
                     "--listen", f"127.0.0.1:{gateway_port}", "--data-dir", str(Path(data_dir) / "gateway"), "--disable-tls",
                 ],
                 cwd=root,
@@ -54,7 +54,7 @@ def main() -> None:
             processes.append(gateway)
             console = subprocess.Popen(
                 [
-                    "go", "-C", str(root / "cauteum-cli"), "run", "./cmd/cauteum-console",
+                    "go", "-C", str(root / "cautem-cli"), "run", "./cmd/cautem-console",
                     "--listen", f"127.0.0.1:{console_port}", "--gateway", f"http://127.0.0.1:{gateway_port}",
                 ],
                 cwd=root,
@@ -63,25 +63,25 @@ def main() -> None:
             processes.append(console)
             wait_http(f"http://127.0.0.1:{gateway_port}/v1/auth/login", gateway)
             wait_http(f"http://127.0.0.1:{console_port}/healthz", console)
-            environment["CAUTEUM_CONSOLE_E2E_URL"] = f"http://127.0.0.1:{console_port}"
+            environment["CAUTEM_CONSOLE_E2E_URL"] = f"http://127.0.0.1:{console_port}"
             with sync_playwright() as playwright:
                 browser = playwright.chromium.launch(headless=True)
                 context = browser.new_context()
                 page = context.new_page()
                 errors: list[str] = []
                 page.on("pageerror", lambda error: errors.append(str(error)))
-                response = page.goto(environment["CAUTEUM_CONSOLE_E2E_URL"], wait_until="networkidle")
+                response = page.goto(environment["CAUTEM_CONSOLE_E2E_URL"], wait_until="networkidle")
                 assert response is not None and response.status == 200
-                assert page.title() == "Cauteum Console"
+                assert page.title() == "cautem Console"
                 assert page.get_by_role("heading", name="Sandboxes").is_visible()
                 assert page.get_by_text("No sandboxes").is_visible()
                 assert page.get_by_text("local-dev").is_visible()
                 headers = response.all_headers()
                 assert "script-src 'none'" in headers.get("content-security-policy", "")
-                css = page.request.get(environment["CAUTEUM_CONSOLE_E2E_URL"] + "/assets/console.css")
+                css = page.request.get(environment["CAUTEM_CONSOLE_E2E_URL"] + "/assets/console.css")
                 assert css.status == 200 and "color-scheme:dark" in css.text()
                 cookies = {item["name"]: item for item in context.cookies()}
-                session = cookies.get("cauteum_console_session")
+                session = cookies.get("cautem_console_session")
                 assert session is not None and session["httpOnly"] and session["sameSite"] == "Lax"
                 page.get_by_role("button", name="Sign out").click()
                 signed_out_heading = page.get_by_role("heading", name="Signed out")
@@ -89,14 +89,14 @@ def main() -> None:
                     signed_out_heading.wait_for(state="visible", timeout=3000)
                 except Exception as error:
                     raise AssertionError(f"logout did not render signed-out page: url={page.url} title={page.title()} html={page.content()[:1200]}") from error
-                assert "cauteum_console_session" not in {item["name"] for item in context.cookies()}
+                assert "cautem_console_session" not in {item["name"] for item in context.cookies()}
 
                 csrf_context = browser.new_context()
                 csrf_page = csrf_context.new_page()
-                csrf_page.goto(environment["CAUTEUM_CONSOLE_E2E_URL"], wait_until="networkidle")
+                csrf_page.goto(environment["CAUTEM_CONSOLE_E2E_URL"], wait_until="networkidle")
                 csrf = csrf_page.locator('form[action="/logout"] input[name="csrf"]').input_value()
                 rejected = csrf_page.request.post(
-                    environment["CAUTEUM_CONSOLE_E2E_URL"] + "/logout", form={"csrf": csrf}
+                    environment["CAUTEM_CONSOLE_E2E_URL"] + "/logout", form={"csrf": csrf}
                 )
                 assert rejected.status == 403, f"missing Origin should be rejected, got {rejected.status}"
                 csrf_context.close()

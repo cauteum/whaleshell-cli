@@ -23,13 +23,13 @@ type Context struct {
 //	--workspace NAME
 //	-o/--output json|yaml|text
 //
-// Env: OPENSHELL_GATEWAY (name or URL), CAUTEUM_GATEWAY_URL, OPENSHELL_WORKSPACE, CAUTEUM_WORKSPACE.
+// Env: OPENSHELL_GATEWAY (name or URL), CAUTEM_GATEWAY_URL, OPENSHELL_WORKSPACE, CAUTEM_WORKSPACE.
 func Parse(args []string) (Context, []string) {
 	ctx := Context{
-		Workspace: firstNonEmpty(os.Getenv("CAUTEUM_WORKSPACE"), os.Getenv("OPENSHELL_WORKSPACE"), "default"),
+		Workspace: firstNonEmpty(os.Getenv("CAUTEM_WORKSPACE"), os.Getenv("OPENSHELL_WORKSPACE"), "default"),
 		Output:    "text",
 	}
-	if v := firstNonEmpty(os.Getenv("CAUTEUM_GATEWAY_URL"), os.Getenv("OPENSHELL_GATEWAY")); v != "" {
+	if v := firstNonEmpty(os.Getenv("CAUTEM_GATEWAY_URL"), os.Getenv("OPENSHELL_GATEWAY")); v != "" {
 		if looksLikeURL(v) {
 			ctx.GatewayURL = v
 		} else {

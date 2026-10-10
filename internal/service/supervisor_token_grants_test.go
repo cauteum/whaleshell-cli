@@ -4,14 +4,14 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/cautem/cauteum-providers/provider"
-	"github.com/cautem/cauteum-proxy/proxy"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-providers/provider"
+	"github.com/cautem/cautem-proxy/proxy"
+	"github.com/cautem/cautem-sdk/go/cautem"
 )
 
 func TestSandboxTokenGrantsPackagesAttachedProfileMetadata(t *testing.T) {
-	sandbox := cauteum.Sandbox{AttachedProviders: []string{"corp"}}
-	providers := map[string]cauteum.ProviderRecord{
+	sandbox := cautem.Sandbox{AttachedProviders: []string{"corp"}}
+	providers := map[string]cautem.ProviderRecord{
 		"corp": {Name: "corp", Type: "corp-api", Workspace: "team"},
 	}
 	profiles := map[string]provider.Profile{

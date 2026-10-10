@@ -14,7 +14,7 @@ func TestPodmanDriverConfigReadsOpenShellTablesAndSharedDefaults(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("OPENSHELL_CONFIG", path)
-	t.Setenv("CAUTEUM_PODMAN_CONFIG", "")
+	t.Setenv("CAUTEM_PODMAN_CONFIG", "")
 	config, err := podmanDriverConfigFromEnvironment()
 	if err != nil {
 		t.Fatal(err)
@@ -31,7 +31,7 @@ func TestPodmanDriverConfigMergesNativeOverridesOverOpenShellAndGatewayDefaults(
 		t.Fatal(err)
 	}
 	t.Setenv("OPENSHELL_CONFIG", path)
-	t.Setenv("CAUTEUM_PODMAN_CONFIG", `{"network_name":"native-net","enable_bind_mounts":true}`)
+	t.Setenv("CAUTEM_PODMAN_CONFIG", `{"network_name":"native-net","enable_bind_mounts":true}`)
 
 	config, err := podmanDriverConfigFromEnvironment()
 	if err != nil {
@@ -45,7 +45,7 @@ func TestPodmanDriverConfigMergesNativeOverridesOverOpenShellAndGatewayDefaults(
 func TestPodmanDriverConfigRejectsNonObjectAndOversizedNativeConfig(t *testing.T) {
 	for _, raw := range []string{"null", "[]", strings.Repeat("x", maxDriverConfigBytes+1)} {
 		t.Setenv("OPENSHELL_CONFIG", "")
-		t.Setenv("CAUTEUM_PODMAN_CONFIG", raw)
+		t.Setenv("CAUTEM_PODMAN_CONFIG", raw)
 		if _, err := podmanDriverConfigFromEnvironment(); err == nil {
 			t.Fatalf("accepted invalid native driver config of length %d", len(raw))
 		}
@@ -58,7 +58,7 @@ func TestPodmanDriverConfigBoundsOpenShellConfig(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("OPENSHELL_CONFIG", path)
-	t.Setenv("CAUTEUM_PODMAN_CONFIG", "")
+	t.Setenv("CAUTEM_PODMAN_CONFIG", "")
 	if _, err := podmanDriverConfigFromEnvironment(); err == nil || !strings.Contains(err.Error(), "exceeds") {
 		t.Fatalf("oversized OpenShell config error=%v", err)
 	}
@@ -70,13 +70,13 @@ func TestSelectedDriverUsesOpenShellComputeDriverSelection(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Setenv("OPENSHELL_CONFIG", path)
-	t.Setenv("CAUTEUM_DRIVER", "")
+	t.Setenv("CAUTEM_DRIVER", "")
 	if got, err := selectedDriver(); err != nil || got != "podman" {
 		t.Fatalf("selectedDriver()=(%q, %v), want podman", got, err)
 	}
-	t.Setenv("CAUTEUM_DRIVER", "docker")
+	t.Setenv("CAUTEM_DRIVER", "docker")
 	if _, err := selectedDriver(); err == nil {
-		t.Fatal("explicit CAUTEUM_DRIVER outside compute_drivers was accepted")
+		t.Fatal("explicit CAUTEM_DRIVER outside compute_drivers was accepted")
 	}
 }
 
@@ -86,7 +86,7 @@ func TestSelectedDriverKeepsDockerDefaultForMultiDriverOpenShellConfig(t *testin
 		t.Fatal(err)
 	}
 	t.Setenv("OPENSHELL_CONFIG", path)
-	t.Setenv("CAUTEUM_DRIVER", "")
+	t.Setenv("CAUTEM_DRIVER", "")
 	if got, err := selectedDriver(); err != nil || got != "docker" {
 		t.Fatalf("selectedDriver()=(%q, %v), want docker", got, err)
 	}
@@ -102,7 +102,7 @@ func TestSelectedDriverRejectsDuplicateOrEmptyOpenShellSelection(t *testing.T) {
 			t.Fatal(err)
 		}
 		t.Setenv("OPENSHELL_CONFIG", path)
-		t.Setenv("CAUTEUM_DRIVER", "")
+		t.Setenv("CAUTEM_DRIVER", "")
 		if _, err := selectedDriver(); err == nil {
 			t.Fatalf("selectedDriver accepted invalid config %q", input)
 		}

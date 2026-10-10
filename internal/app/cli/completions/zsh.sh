@@ -1,5 +1,5 @@
-#compdef cauteum
-_cauteum() {
+#compdef cautem
+_cautem() {
     local -a commands=(
         version sandbox sb exec provider profile policy pol gateway gw logs lg term status
         health init doctor dr whoami workspace ws forward fwd service svc settings
@@ -9,4 +9,4 @@ _cauteum() {
     _describe 'command' commands
 }
 
-compdef _cauteum cauteum
+compdef _cautem cautem

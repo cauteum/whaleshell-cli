@@ -1,7 +1,7 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 cauteum
+# SPDX-FileCopyrightText: Copyright (c) 2026 cautem
 # SPDX-License-Identifier: Apache-2.0
 #
-# Cursor Agent + GitHub write (cauteum) in one base policy.
+# Cursor Agent + GitHub write (cautem) in one base policy.
 # Use with: --from cursor --provider gh -- agent
 # Cursor endpoints live in base (not only provider composition) so agent works
 # even before/without a cursor provider instance. gh provider still supplies tokens.
@@ -23,7 +23,7 @@ filesystem_policy:
   - /tmp
   - /dev/null
   - /workspace
-  - /cauteum/data
+  - /cautem/data
   - /sandbox
 landlock:
   compatibility: best_effort
@@ -139,8 +139,8 @@ network_policies:
       ports:
       - 80
       - 443
-  github-git-cauteum:
-    name: github-git-cauteum
+  github-git-cautem:
+    name: github-git-cautem
     endpoints:
     - host: github.com
       port: 443
@@ -153,24 +153,24 @@ network_policies:
       rules:
       - allow:
           method: GET
-          path: /cauteum/**
+          path: /cautem/**
       - allow:
           method: HEAD
-          path: /cauteum/**
+          path: /cautem/**
       - allow:
           method: OPTIONS
-          path: /cauteum/**
+          path: /cautem/**
       - allow:
           method: POST
-          path: /cauteum/**/git-upload-pack
+          path: /cautem/**/git-upload-pack
       - allow:
           method: POST
-          path: /cauteum/**/git-receive-pack
+          path: /cautem/**/git-receive-pack
     binaries:
     - path: /usr/bin/git
     - path: /usr/local/bin/git
-  github-api-cauteum:
-    name: github-api-cauteum
+  github-api-cautem:
+    name: github-api-cautem
     endpoints:
     - host: api.github.com
       port: 443
@@ -183,31 +183,31 @@ network_policies:
       rules:
       - allow:
           method: GET
-          path: /repos/cauteum/**
+          path: /repos/cautem/**
       - allow:
           method: HEAD
-          path: /repos/cauteum/**
+          path: /repos/cautem/**
       - allow:
           method: POST
-          path: /repos/cauteum/**
+          path: /repos/cautem/**
       - allow:
           method: PUT
-          path: /repos/cauteum/**
+          path: /repos/cautem/**
       - allow:
           method: PATCH
-          path: /repos/cauteum/**
+          path: /repos/cautem/**
       - allow:
           method: DELETE
-          path: /repos/cauteum/**
+          path: /repos/cautem/**
       - allow:
           method: POST
-          path: /orgs/cauteum/repos
+          path: /orgs/cautem/repos
       - allow:
           method: GET
-          path: /orgs/cauteum
+          path: /orgs/cautem
       - allow:
           method: GET
-          path: /orgs/cauteum/**
+          path: /orgs/cautem/**
       - allow:
           method: POST
           path: /user/repos

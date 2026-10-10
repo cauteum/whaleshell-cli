@@ -15,7 +15,7 @@ inference:
   # Optional custom profile (Providers v2):
   # profiles:
   #   - id: my-vllm
-  #     host: host.cauteum.internal
+  #     host: host.cautem.internal
   #     port: 8000
   #     env_keys: [OPENAI_API_KEY]
   #     refresh: env

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cautem/cauteum-cli/internal/logger"
+	"github.com/cautem/cautem-cli/internal/logger"
 	"github.com/cautem/slogx"
 )
 

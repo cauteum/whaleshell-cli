@@ -1,4 +1,4 @@
-// Package gwconfig loads multi-gateway CLI config (~/.config/cauteum/config.yaml).
+// Package gwconfig loads multi-gateway CLI config (~/.config/cautem/config.yaml).
 package gwconfig
 
 import (
@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/cautem/cauteum-cli/internal/securefile"
-	"github.com/cautem/cauteum-core/defaults"
+	"github.com/cautem/cautem-cli/internal/securefile"
+	"github.com/cautem/cautem-core/defaults"
 	"gopkg.in/yaml.v3"
 )
 
@@ -47,13 +47,13 @@ type Gateway struct {
 // Path returns the default config path.
 func Path() (string, error) {
 	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-		return filepath.Join(xdg, "cauteum", "config.yaml"), nil
+		return filepath.Join(xdg, "cautem", "config.yaml"), nil
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".config", "cauteum", "config.yaml"), nil
+	return filepath.Join(home, ".config", "cautem", "config.yaml"), nil
 }
 
 // Load reads config or returns empty defaults.
@@ -128,25 +128,25 @@ func ResolveImage(from, explicit string) (string, error) {
 	}
 	builtins := map[string]string{
 		"debian": defaults.ImageDebian,
-		// cauteum catalog shorts (local). GHCR paths when CAUTEUM_USE_GHCR=1.
-		"base":        defaults.ImageLocal,
-		"cauteum/cli": defaults.ImageLocal,
-		"cauteum/gui": defaults.ImageGUI,
-		"cauteum/gpu": defaults.ImageGPU,
-		"cursor":      defaults.ImageCursor,
-		"claude":      defaults.ImageClaude,
-		"codex":       defaults.ImageCodex,
+		// cautem catalog shorts (local). GHCR paths when CAUTEM_USE_GHCR=1.
+		"base":       defaults.ImageLocal,
+		"cautem/cli": defaults.ImageLocal,
+		"cautem/gui": defaults.ImageGUI,
+		"cautem/gpu": defaults.ImageGPU,
+		"cursor":     defaults.ImageCursor,
+		"claude":     defaults.ImageClaude,
+		"codex":      defaults.ImageCodex,
 		// Opt-in NVIDIA OpenShell community interop.
 		"community/base":   "ghcr.io/nvidia/openshell-community/sandboxes/base:latest",
 		"community/ollama": "ghcr.io/nvidia/openshell-community/sandboxes/ollama:latest",
 		"ollama":           "ghcr.io/nvidia/openshell-community/sandboxes/ollama:latest",
 	}
-	// After images:pull / CI publish, set images.* in config or CAUTEUM_USE_GHCR=1 for GHCR builtins.
-	if os.Getenv("CAUTEUM_USE_GHCR") == "1" {
+	// After images:pull / CI publish, set images.* in config or CAUTEM_USE_GHCR=1 for GHCR builtins.
+	if os.Getenv("CAUTEM_USE_GHCR") == "1" {
 		builtins["base"] = defaults.ImageBaseRef
-		builtins["cauteum/cli"] = defaults.ImageBaseRef
-		builtins["cauteum/gui"] = defaults.ImageGUIRef
-		builtins["cauteum/gpu"] = defaults.ImageGPURef
+		builtins["cautem/cli"] = defaults.ImageBaseRef
+		builtins["cautem/gui"] = defaults.ImageGUIRef
+		builtins["cautem/gpu"] = defaults.ImageGPURef
 		builtins["cursor"] = defaults.ImageCursorRef
 		builtins["claude"] = defaults.ImageClaudeRef
 		builtins["codex"] = defaults.ImageCodexRef
@@ -154,5 +154,5 @@ func ResolveImage(from, explicit string) (string, error) {
 	if img, ok := builtins[from]; ok {
 		return img, nil
 	}
-	return "", fmt.Errorf("unknown --from %q (add images.%s to ~/.config/cauteum/config.yaml)", from, from)
+	return "", fmt.Errorf("unknown --from %q (add images.%s to ~/.config/cautem/config.yaml)", from, from)
 }

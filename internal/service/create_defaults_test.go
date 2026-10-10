@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 cauteum
+// SPDX-FileCopyrightText: Copyright (c) 2026 cautem
 // SPDX-License-Identifier: Apache-2.0
 
 package service
@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cautem/cauteum-cli/internal/storage/templates"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-cli/internal/storage/templates"
 )
 
 func TestApplyCreateDefaultsFromEnv(t *testing.T) {
@@ -69,7 +69,7 @@ func TestMergeTemplateIntoCreate(t *testing.T) {
 func TestTemplateRoundTripPids(t *testing.T) {
 	dir := t.TempDir()
 	t.Setenv("XDG_CONFIG_HOME", dir)
-	_ = os.MkdirAll(filepath.Join(dir, "cauteum", "templates"), 0o755)
+	_ = os.MkdirAll(filepath.Join(dir, "cautem", "templates"), 0o755)
 	t.Run("save", func(t *testing.T) {
 		if err := templates.Save(templates.Template{Name: "desk", Memory: "2g", PidsLimit: 2048}); err != nil {
 			t.Fatal(err)

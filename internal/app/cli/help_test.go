@@ -4,12 +4,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cautem/cauteum-cli/internal/service"
+	"github.com/cautem/cautem-cli/internal/service"
 )
 
 func TestHelpNested(t *testing.T) {
 	root := helpText(nil)
-	if root == "" || !strings.Contains(root, "cauteum") {
+	if root == "" || !strings.Contains(root, "cautem") {
 		t.Fatal("root help empty")
 	}
 	sb := helpText([]string{"sandbox"})
@@ -43,9 +43,9 @@ func TestSandboxCreateRejectsRemovedNoOpSSHFlag(t *testing.T) {
 	}
 }
 
-func TestCompletionsUseCauteumFunctionName(t *testing.T) {
+func TestCompletionsUsecautemFunctionName(t *testing.T) {
 	for _, script := range []string{completionsBash, completionsZsh} {
-		if strings.Contains(script, "_osg") || !strings.Contains(script, "_cauteum") {
+		if strings.Contains(script, "_osg") || !strings.Contains(script, "_cautem") {
 			t.Fatalf("completion function name is stale: %q", script)
 		}
 	}

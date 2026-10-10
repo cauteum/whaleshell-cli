@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 cauteum
+// SPDX-FileCopyrightText: Copyright (c) 2026 cautem
 // SPDX-License-Identifier: Apache-2.0
 
 package service
@@ -8,13 +8,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
 )
 
 const (
-	envDefaultMemory    = "CAUTEUM_DEFAULT_MEMORY"
-	envDefaultCPU       = "CAUTEUM_DEFAULT_CPU"
-	envDefaultPidsLimit = "CAUTEUM_DEFAULT_PIDS_LIMIT"
+	envDefaultMemory    = "CAUTEM_DEFAULT_MEMORY"
+	envDefaultCPU       = "CAUTEM_DEFAULT_CPU"
+	envDefaultPidsLimit = "CAUTEM_DEFAULT_PIDS_LIMIT"
 )
 
 // applyCreateDefaults fills Memory/CPU/PidsLimit from config.yaml defaults then

@@ -29,10 +29,10 @@ type GatewayAdd struct {
 //	  [--oidc-issuer URL] [--oidc-client-id ID] [--oidc-audience AUD] [--oidc-scopes S]
 func ParseGatewayAdd(args []string) (GatewayAdd, error) {
 	if len(args) == 0 {
-		return GatewayAdd{}, fmt.Errorf("usage: cauteum gateway add <endpoint> [--name NAME] [--local] [--oidc-issuer URL]")
+		return GatewayAdd{}, fmt.Errorf("usage: cautem gateway add <endpoint> [--name NAME] [--local] [--oidc-issuer URL]")
 	}
 	if !looksLikeEndpoint(args[0]) {
-		return GatewayAdd{}, fmt.Errorf("usage: cauteum gateway add <endpoint> [--name NAME] [--local]")
+		return GatewayAdd{}, fmt.Errorf("usage: cautem gateway add <endpoint> [--name NAME] [--local]")
 	}
 	out := GatewayAdd{Endpoint: args[0]}
 	for i := 1; i < len(args); i++ {
@@ -145,10 +145,10 @@ func ParsePolicySet(args []string) (PolicySet, error) {
 		}
 	}
 	if out.Path == "" {
-		return PolicySet{}, fmt.Errorf("usage: cauteum policy set [name] --policy <path> [--wait] [--global]")
+		return PolicySet{}, fmt.Errorf("usage: cautem policy set [name] --policy <path> [--wait] [--global]")
 	}
 	if !out.Global && out.Name == "" {
-		return PolicySet{}, fmt.Errorf("usage: cauteum policy set <name> --policy <path> [--wait]")
+		return PolicySet{}, fmt.Errorf("usage: cautem policy set <name> --policy <path> [--wait]")
 	}
 	return out, nil
 }
@@ -193,7 +193,7 @@ func ParsePolicyGet(args []string) (PolicyGet, error) {
 		}
 	}
 	if !out.Global && out.Name == "" {
-		return PolicyGet{}, fmt.Errorf("usage: cauteum policy get <name> [--full|--base] [--rev N]")
+		return PolicyGet{}, fmt.Errorf("usage: cautem policy get <name> [--full|--base] [--rev N]")
 	}
 	return out, nil
 }
@@ -208,7 +208,7 @@ type ForwardStart struct {
 // ParseForwardStart parses args after "start".
 func ParseForwardStart(args []string) (ForwardStart, error) {
 	if len(args) == 0 {
-		return ForwardStart{}, fmt.Errorf("usage: cauteum forward start <port> [sandbox] [-d]")
+		return ForwardStart{}, fmt.Errorf("usage: cautem forward start <port> [sandbox] [-d]")
 	}
 	out := ForwardStart{Port: args[0]}
 	for i := 1; i < len(args); i++ {
@@ -237,7 +237,7 @@ type ForwardStop struct {
 // ParseForwardStop parses args after "stop".
 func ParseForwardStop(args []string) (ForwardStop, error) {
 	if len(args) == 0 {
-		return ForwardStop{}, fmt.Errorf("usage: cauteum forward stop <port> [sandbox]")
+		return ForwardStop{}, fmt.Errorf("usage: cautem forward stop <port> [sandbox]")
 	}
 	out := ForwardStop{Port: args[0]}
 	if len(args) > 1 {
@@ -256,7 +256,7 @@ type ServiceExpose struct {
 // ParseServiceExpose parses args after "expose".
 func ParseServiceExpose(args []string) (ServiceExpose, error) {
 	if len(args) < 2 {
-		return ServiceExpose{}, fmt.Errorf("usage: cauteum service expose <sandbox> <target-port> [service]")
+		return ServiceExpose{}, fmt.Errorf("usage: cautem service expose <sandbox> <target-port> [service]")
 	}
 	out := ServiceExpose{Sandbox: args[0], Port: args[1]}
 	if len(args) > 2 {
@@ -306,7 +306,7 @@ func ParseSettingsSet(args []string) (SettingsSet, error) {
 		}
 	}
 	if out.Key == "" || out.Value == "" {
-		return SettingsSet{}, fmt.Errorf("usage: cauteum settings set [sandbox] --key KEY --value VALUE [--global]")
+		return SettingsSet{}, fmt.Errorf("usage: cautem settings set [sandbox] --key KEY --value VALUE [--global]")
 	}
 	return out, nil
 }
@@ -321,7 +321,7 @@ type SandboxTransfer struct {
 // ParseSandboxTransfer parses args after upload|download.
 func ParseSandboxTransfer(args []string) (SandboxTransfer, error) {
 	if len(args) < 2 {
-		return SandboxTransfer{}, fmt.Errorf("usage: cauteum sandbox upload|download <name> <path> [dest]")
+		return SandboxTransfer{}, fmt.Errorf("usage: cautem sandbox upload|download <name> <path> [dest]")
 	}
 	out := SandboxTransfer{Name: args[0], Path: args[1]}
 	if len(args) > 2 {
@@ -383,7 +383,7 @@ func ParseInferenceSet(args []string) (InferenceSet, error) {
 		}
 	}
 	if out.Provider == "" || out.Model == "" {
-		return InferenceSet{}, fmt.Errorf("usage: cauteum inference set --provider NAME --model MODEL [--timeout N] [--no-verify]")
+		return InferenceSet{}, fmt.Errorf("usage: cautem inference set --provider NAME --model MODEL [--timeout N] [--no-verify]")
 	}
 	return out, nil
 }
@@ -497,10 +497,10 @@ func ParseSandboxExec(args []string) (SandboxExec, error) {
 		}
 	}
 	if out.Name == "" {
-		return SandboxExec{}, fmt.Errorf("usage: cauteum sandbox exec [--name] <name> [--workdir DIR] [--env K=V] -- CMD")
+		return SandboxExec{}, fmt.Errorf("usage: cautem sandbox exec [--name] <name> [--workdir DIR] [--env K=V] -- CMD")
 	}
 	if len(out.Argv) == 0 {
-		return SandboxExec{}, fmt.Errorf("usage: cauteum sandbox exec <name> -- CMD")
+		return SandboxExec{}, fmt.Errorf("usage: cautem sandbox exec <name> -- CMD")
 	}
 	return out, nil
 }

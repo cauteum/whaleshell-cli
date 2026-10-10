@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cautem/cauteum-cli/internal/outfmt"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/outfmt"
+	"github.com/cautem/cautem-sdk/go/cautem"
 )
 
 // StatusSnapshot is structured status for -o json|yaml.
@@ -33,7 +33,7 @@ func (a *App) Status() error {
 	out.Gateway = u
 	ctx, cancel := a.withTimeout(TimeoutAPIShort)
 	defer cancel()
-	cli := cauteum.NewWithToken(u, a.gatewayTokenForURL(u))
+	cli := cautem.NewWithToken(u, a.gatewayTokenForURL(u))
 	if _, err := cli.Healthz(ctx); err == nil {
 		out.Status = "Connected"
 	}

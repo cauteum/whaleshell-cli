@@ -11,12 +11,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cautem/cauteum-cli/internal/outfmt"
-	"github.com/cautem/cauteum-cli/internal/providerflags"
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cautem/cauteum-core/defaults"
-	"github.com/cautem/cauteum-runtime/refresh"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/outfmt"
+	"github.com/cautem/cautem-cli/internal/providerflags"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-core/defaults"
+	"github.com/cautem/cautem-runtime/refresh"
+	"github.com/cautem/cautem-sdk/go/cautem"
 )
 
 // ProviderGet prints provider metadata (no secret values).
@@ -150,7 +150,7 @@ func (a *App) GatewayInfo() error {
 	if err != nil {
 		return err
 	}
-	info, err := cauteum.NewWithToken(u, a.gatewayTokenForURL(u)).ControlOverview(a.apiCtx())
+	info, err := cautem.NewWithToken(u, a.gatewayTokenForURL(u)).ControlOverview(a.apiCtx())
 	if err != nil {
 		return err
 	}
@@ -227,7 +227,7 @@ func (a *App) Whoami() error {
 		if strings.TrimSpace(g.Token) != "" {
 			snap.Auth = "token"
 		}
-		cli := cauteum.NewWithToken(g.URL, g.Token)
+		cli := cautem.NewWithToken(g.URL, g.Token)
 		ctx, cancel := a.withTimeout(TimeoutAPIShort)
 		defer cancel()
 		if who, err := cli.Whoami(ctx); err == nil {
@@ -282,13 +282,13 @@ func (a *App) Whoami() error {
 	}, snap)
 }
 
-// localParityDir is ~/.config/cauteum/parity for workspace/settings/forward/service/rule MVP state.
+// localParityDir is ~/.config/cautem/parity for workspace/settings/forward/service/rule MVP state.
 func localParityDir() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	dir := filepath.Join(home, ".config", "cauteum", "parity")
+	dir := filepath.Join(home, ".config", "cautem", "parity")
 	return dir, os.MkdirAll(dir, 0o755)
 }
 
@@ -599,7 +599,7 @@ func (a *App) ServiceExpose(sandbox, name, port string) error {
 		if _, err := c.ExposeService(ctx, sandbox, name, uint32(guestPort)); err == nil {
 			fmt.Printf("service %s exposed on %s:%d\n", name, sandbox, guestPort)
 			fmt.Printf("  %s\n", edgeURL)
-			fmt.Printf("  http://%s.cauteum.localhost:%d/\n", name, gwPort)
+			fmt.Printf("  http://%s.cautem.localhost:%d/\n", name, gwPort)
 			return nil
 		}
 	}

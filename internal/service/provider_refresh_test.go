@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"github.com/cautem/cauteum-providers/provider"
+	"github.com/cautem/cautem-providers/provider"
 )
 
 func TestProfileRefreshConfigMapsSecretsAndOutputs(t *testing.T) {

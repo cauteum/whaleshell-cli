@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright (c) 2026 cauteum
+// SPDX-FileCopyrightText: Copyright (c) 2026 cautem
 // SPDX-License-Identifier: Apache-2.0
 
 package service
@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"os"
 
-	core "github.com/cautem/cauteum-core"
-	"github.com/cautem/cauteum-driver/driver"
-	"github.com/cautem/cauteum-runtime/agentconfig"
+	core "github.com/cautem/cautem-core"
+	"github.com/cautem/cautem-driver/driver"
+	"github.com/cautem/cautem-runtime/agentconfig"
 )
 
 type guestDriver interface {

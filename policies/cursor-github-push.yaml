@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Cursor Agent + GitHub push/create-repo base policy.
-# Replace YOUR_ORG with your GitHub org/user (sed -i '' 's/YOUR_ORG/cauteum/g' …).
+# Replace YOUR_ORG with your GitHub org/user (sed -i '' 's/YOUR_ORG/cautem/g' …).
 #
-#   cauteum sandbox create --name cursor --from cursor \
-#     --policy cauteum-cli/policies/cursor-github-push.yaml \
+#   cautem sandbox create --name cursor --from cursor \
+#     --policy cautem-cli/policies/cursor-github-push.yaml \
 #     --provider cursor --provider gh
 
 version: 1
@@ -25,7 +25,7 @@ filesystem_policy:
   - /tmp
   - /dev/null
   - /workspace
-  - /cauteum/data
+  - /cautem/data
   - /sandbox
 landlock:
   compatibility: best_effort

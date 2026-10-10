@@ -1,4 +1,4 @@
-// Package cli is the thin cobra-facing layer for the cauteum binary.
+// Package cli is the thin cobra-facing layer for the cautem binary.
 package cli
 
 import (
@@ -9,13 +9,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cautem/cauteum-cli/internal/global"
-	"github.com/cautem/cauteum-cli/internal/logger"
-	"github.com/cautem/cauteum-cli/internal/osargs"
-	"github.com/cautem/cauteum-cli/internal/providerflags"
-	"github.com/cautem/cauteum-cli/internal/service"
-	"github.com/cautem/cauteum-cli/internal/storage/templates"
-	tuipkg "github.com/cautem/cauteum-cli/internal/tui"
+	"github.com/cautem/cautem-cli/internal/global"
+	"github.com/cautem/cautem-cli/internal/logger"
+	"github.com/cautem/cautem-cli/internal/osargs"
+	"github.com/cautem/cautem-cli/internal/providerflags"
+	"github.com/cautem/cautem-cli/internal/service"
+	"github.com/cautem/cautem-cli/internal/storage/templates"
+	tuipkg "github.com/cautem/cautem-cli/internal/tui"
 	"golang.org/x/term"
 )
 
@@ -38,7 +38,7 @@ func execute(a *service.App, args []string) error {
 	if len(args) == 0 {
 		fmt.Println(a.Banner())
 		fmt.Println("commands: sandbox|exec|provider|profile|policy|gateway|logs|term|status|health|init|doctor|whoami|workspace|forward|service|settings|inference|…")
-		fmt.Println("run 'cauteum --help' for full usage")
+		fmt.Println("run 'cautem --help' for full usage")
 		return nil
 	}
 	log := logger.FromContext(a.CommandContext()).With(slog.String("op", "cli.execute"), slog.String("cmd", args[0]))
@@ -90,7 +90,7 @@ func execute(a *service.App, args []string) error {
 	case "ssh-proxy":
 		return runSSHProxy(a, args[1:])
 	case "proxy":
-		// Internal: Docker sidecar entrypoint (`/cauteum/cauteum proxy --listen … --policy …`).
+		// Internal: Docker sidecar entrypoint (`/cautem/cautem proxy --listen … --policy …`).
 		return runProxy(a, args[1:])
 	case "install":
 		return runInstall(a, args[1:])
@@ -111,26 +111,26 @@ func runDoctor(a *service.App, args []string) error {
 			switch arg {
 			case "--yes", "-y":
 				if explicitDryRun {
-					return fmt.Errorf("usage: cauteum doctor cleanup [--dry-run|--yes]")
+					return fmt.Errorf("usage: cautem doctor cleanup [--dry-run|--yes]")
 				}
 				confirm = true
 			case "--dry-run":
 				if confirm {
-					return fmt.Errorf("usage: cauteum doctor cleanup [--dry-run|--yes]")
+					return fmt.Errorf("usage: cautem doctor cleanup [--dry-run|--yes]")
 				}
 				explicitDryRun = true
 			default:
-				return fmt.Errorf("usage: cauteum doctor cleanup [--dry-run|--yes]")
+				return fmt.Errorf("usage: cautem doctor cleanup [--dry-run|--yes]")
 			}
 		}
 		return a.CleanupDockerTestResources(a.CommandContext(), confirm)
 	}
-	return fmt.Errorf("usage: cauteum doctor check")
+	return fmt.Errorf("usage: cautem doctor check")
 }
 
 func runCompletions(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum completions <bash|zsh|fish|powershell>")
+		return fmt.Errorf("usage: cautem completions <bash|zsh|fish|powershell>")
 	}
 	shell := strings.ToLower(args[0])
 	switch shell {
@@ -154,31 +154,31 @@ func runInit(a *service.App, args []string) error {
 		switch args[i] {
 		case "--agent":
 			if i+1 >= len(args) {
-				return fmt.Errorf("usage: cauteum init --agent cursor [--dir DIR] [--force]")
+				return fmt.Errorf("usage: cautem init --agent cursor [--dir DIR] [--force]")
 			}
 			i++
 			opt.Agent = args[i]
 		case "--dir":
 			if i+1 >= len(args) {
-				return fmt.Errorf("usage: cauteum init --agent cursor [--dir DIR] [--force]")
+				return fmt.Errorf("usage: cautem init --agent cursor [--dir DIR] [--force]")
 			}
 			i++
 			opt.Dir = args[i]
 		case "--force", "-f":
 			opt.Force = true
 		default:
-			return fmt.Errorf("usage: cauteum init --agent cursor [--dir DIR] [--force]")
+			return fmt.Errorf("usage: cautem init --agent cursor [--dir DIR] [--force]")
 		}
 	}
 	if strings.TrimSpace(opt.Agent) == "" {
-		return fmt.Errorf("usage: cauteum init --agent cursor [--dir DIR] [--force]")
+		return fmt.Errorf("usage: cautem init --agent cursor [--dir DIR] [--force]")
 	}
 	return a.Init(opt)
 }
 
 func runProvider(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum provider create --name NAME --type PROFILE [--from-existing|--credential KEY]")
+		return fmt.Errorf("usage: cautem provider create --name NAME --type PROFILE [--from-existing|--credential KEY]")
 	}
 	switch args[0] {
 	case "list-profiles":
@@ -187,12 +187,12 @@ func runProvider(a *service.App, args []string) error {
 			return err
 		}
 		if len(rest) != 0 {
-			return fmt.Errorf("usage: cauteum provider list-profiles [--workspace NAME|--global]")
+			return fmt.Errorf("usage: cautem provider list-profiles [--workspace NAME|--global]")
 		}
 		return a.ProviderProfileList(scope, workspace)
 	case "profile":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum provider profile list|show|import|export|delete|lint …")
+			return fmt.Errorf("usage: cautem provider profile list|show|import|export|delete|lint …")
 		}
 		rest, scope, workspace, err := parseProfileScope(a, args[2:])
 		if err != nil {
@@ -201,7 +201,7 @@ func runProvider(a *service.App, args []string) error {
 		switch args[1] {
 		case "list", "ls":
 			if len(rest) != 0 {
-				return fmt.Errorf("usage: cauteum profile list [--workspace NAME|--global]")
+				return fmt.Errorf("usage: cautem profile list [--workspace NAME|--global]")
 			}
 			return a.ProviderProfileList(scope, workspace)
 		case "show", "describe", "export":
@@ -210,7 +210,7 @@ func runProvider(a *service.App, args []string) error {
 				return err
 			}
 			if id == "" {
-				return fmt.Errorf("usage: cauteum provider profile export <id> [-o yaml|json]")
+				return fmt.Errorf("usage: cautem provider profile export <id> [-o yaml|json]")
 			}
 			return a.ProviderProfileShowFmt(id, outFmt, scope, workspace)
 		case "import":
@@ -219,7 +219,7 @@ func runProvider(a *service.App, args []string) error {
 				return err
 			}
 			if path == "" {
-				return fmt.Errorf("usage: cauteum provider profile import -f <file.yaml>")
+				return fmt.Errorf("usage: cautem provider profile import -f <file.yaml>")
 			}
 			return a.ProviderProfileImport(path, scope, workspace)
 		case "update":
@@ -228,15 +228,15 @@ func runProvider(a *service.App, args []string) error {
 				return err
 			}
 			if path == "" {
-				return fmt.Errorf("usage: cauteum provider profile update -f <file.yaml>")
+				return fmt.Errorf("usage: cautem provider profile update -f <file.yaml>")
 			}
 			return a.ProviderProfileUpdate(path, scope, workspace)
 		case "delete":
 			if len(args) < 3 {
-				return fmt.Errorf("usage: cauteum provider profile delete <id>")
+				return fmt.Errorf("usage: cautem provider profile delete <id>")
 			}
 			if len(rest) != 1 {
-				return fmt.Errorf("usage: cauteum profile delete <id> [--workspace NAME|--global]")
+				return fmt.Errorf("usage: cautem profile delete <id> [--workspace NAME|--global]")
 			}
 			return a.ProviderProfileDelete(rest[0], scope, workspace)
 		case "lint":
@@ -245,7 +245,7 @@ func runProvider(a *service.App, args []string) error {
 				return err
 			}
 			if path == "" {
-				return fmt.Errorf("usage: cauteum provider profile lint -f <file.yaml>")
+				return fmt.Errorf("usage: cautem provider profile lint -f <file.yaml>")
 			}
 			return a.ProviderProfileLint(path)
 		default:
@@ -265,7 +265,7 @@ func runProvider(a *service.App, args []string) error {
 		return a.ProviderCreate(parsed)
 	case "update":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum provider update <name> [--from-existing|--credential KEY[=VALUE]]")
+			return fmt.Errorf("usage: cautem provider update <name> [--from-existing|--credential KEY[=VALUE]]")
 		}
 		name := args[1]
 		fromExisting := false
@@ -298,27 +298,27 @@ func runProvider(a *service.App, args []string) error {
 		return a.ProviderUpdate(name, fromExisting, credentials)
 	case "get":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum provider get <name>")
+			return fmt.Errorf("usage: cautem provider get <name>")
 		}
 		return a.ProviderGet(args[1])
 	case "delete", "rm":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum provider delete <name>")
+			return fmt.Errorf("usage: cautem provider delete <name>")
 		}
 		return a.ProviderDelete(args[1])
 	case "refresh":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum provider refresh <name>|status|configure|rotate|delete …")
+			return fmt.Errorf("usage: cautem provider refresh <name>|status|configure|rotate|delete …")
 		}
 		switch args[1] {
 		case "status":
 			if len(args) < 3 {
-				return fmt.Errorf("usage: cauteum provider refresh status <name>")
+				return fmt.Errorf("usage: cautem provider refresh status <name>")
 			}
 			return a.ProviderRefreshStatus(args[2])
 		case "configure":
 			if len(args) < 3 {
-				return fmt.Errorf("usage: cauteum provider refresh configure <name> --credential-key K --strategy S")
+				return fmt.Errorf("usage: cautem provider refresh configure <name> --credential-key K --strategy S")
 			}
 			opt, err := providerflags.ParseRefreshConfigure(args[2], args[3:])
 			if err != nil {
@@ -327,7 +327,7 @@ func runProvider(a *service.App, args []string) error {
 			return a.ProviderRefreshConfigure(opt)
 		case "rotate":
 			if len(args) < 3 {
-				return fmt.Errorf("usage: cauteum provider refresh rotate <name> --credential-key K")
+				return fmt.Errorf("usage: cautem provider refresh rotate <name> --credential-key K")
 			}
 			key, err := providerflags.ParseRefreshKey(args[2], args[3:])
 			if err != nil {
@@ -336,7 +336,7 @@ func runProvider(a *service.App, args []string) error {
 			return a.ProviderRefreshRotate(args[2], key)
 		case "delete":
 			if len(args) < 3 {
-				return fmt.Errorf("usage: cauteum provider refresh delete <name> --credential-key K")
+				return fmt.Errorf("usage: cautem provider refresh delete <name> --credential-key K")
 			}
 			key, err := providerflags.ParseRefreshKey(args[2], args[3:])
 			if err != nil {
@@ -350,7 +350,7 @@ func runProvider(a *service.App, args []string) error {
 		return a.ProviderList()
 	case "effective":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum provider effective <sandbox>")
+			return fmt.Errorf("usage: cautem provider effective <sandbox>")
 		}
 		return a.ProviderEffective(args[1])
 	default:
@@ -395,7 +395,7 @@ func runInstall(a *service.App, args []string) error {
 		case "--force":
 			opt.Force = true
 		default:
-			return fmt.Errorf("unknown flag %q (usage: cauteum install [--force])", args[i])
+			return fmt.Errorf("unknown flag %q (usage: cautem install [--force])", args[i])
 		}
 	}
 	return a.Install(opt)
@@ -403,7 +403,7 @@ func runInstall(a *service.App, args []string) error {
 
 func runGateway(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum gateway ensure|add|remove|select|info|list|login|logout")
+		return fmt.Errorf("usage: cautem gateway ensure|add|remove|select|info|list|login|logout")
 	}
 	switch args[0] {
 	case "ensure":
@@ -420,7 +420,7 @@ func runGateway(a *service.App, args []string) error {
 			name = args[1]
 		}
 		if name == "" {
-			return fmt.Errorf("usage: cauteum gateway remove [name]")
+			return fmt.Errorf("usage: cautem gateway remove [name]")
 		}
 		return a.GatewayRemove(name)
 	case "select":
@@ -449,7 +449,7 @@ func runGateway(a *service.App, args []string) error {
 
 func runWorkspace(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum workspace create|get|list|delete|member …")
+		return fmt.Errorf("usage: cautem workspace create|get|list|delete|member …")
 	}
 	switch args[0] {
 	case "create":
@@ -473,24 +473,24 @@ func runWorkspace(a *service.App, args []string) error {
 			}
 		}
 		if name == "" {
-			return fmt.Errorf("usage: cauteum workspace create --name NAME")
+			return fmt.Errorf("usage: cautem workspace create --name NAME")
 		}
 		return a.WorkspaceCreate(name)
 	case "get":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum workspace get <name>")
+			return fmt.Errorf("usage: cautem workspace get <name>")
 		}
 		return a.WorkspaceGet(args[1])
 	case "list", "ls":
 		return a.WorkspaceList()
 	case "delete", "rm":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum workspace delete <name>")
+			return fmt.Errorf("usage: cautem workspace delete <name>")
 		}
 		return a.WorkspaceDelete(args[1])
 	case "member":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum workspace member add|remove|list …")
+			return fmt.Errorf("usage: cautem workspace member add|remove|list …")
 		}
 		switch args[1] {
 		case "add":
@@ -523,7 +523,7 @@ func runWorkspace(a *service.App, args []string) error {
 				}
 			}
 			if ws == "" {
-				return fmt.Errorf("usage: cauteum workspace member list --workspace NAME")
+				return fmt.Errorf("usage: cautem workspace member list --workspace NAME")
 			}
 			return a.WorkspaceMemberList(ws)
 		default:
@@ -573,7 +573,7 @@ func parseWorkspaceMemberFlags(args []string, needRole bool) (ws, subject, role 
 		subject = positionals[0]
 	}
 	if ws == "" || subject == "" {
-		return "", "", "", fmt.Errorf("usage: cauteum workspace member add --workspace NAME --subject SUBJECT [--role user|admin]")
+		return "", "", "", fmt.Errorf("usage: cautem workspace member add --workspace NAME --subject SUBJECT [--role user|admin]")
 	}
 	if needRole && role != "user" && role != "admin" {
 		return "", "", "", fmt.Errorf("--role must be user|admin")
@@ -583,7 +583,7 @@ func parseWorkspaceMemberFlags(args []string, needRole bool) (ws, subject, role 
 
 func runSettings(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum settings get|set|delete …")
+		return fmt.Errorf("usage: cautem settings get|set|delete …")
 	}
 	switch args[0] {
 	case "get":
@@ -626,7 +626,7 @@ func runSettings(a *service.App, args []string) error {
 			}
 		}
 		if key == "" {
-			return fmt.Errorf("usage: cauteum settings delete --key KEY [--global]")
+			return fmt.Errorf("usage: cautem settings delete --key KEY [--global]")
 		}
 		return a.SettingsDelete(key)
 	default:
@@ -636,7 +636,7 @@ func runSettings(a *service.App, args []string) error {
 
 func runForward(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum forward start|stop|list …")
+		return fmt.Errorf("usage: cautem forward start|stop|list …")
 	}
 	switch args[0] {
 	case "start":
@@ -645,7 +645,7 @@ func runForward(a *service.App, args []string) error {
 			return err
 		}
 		if parsed.Name == "" {
-			return fmt.Errorf("usage: cauteum forward start [bind:]port <sandbox> [-d]")
+			return fmt.Errorf("usage: cautem forward start [bind:]port <sandbox> [-d]")
 		}
 		return a.ForwardStart(parsed.Name, parsed.Port, parsed.Port, parsed.Background)
 	case "stop":
@@ -661,7 +661,7 @@ func runForward(a *service.App, args []string) error {
 	case "list", "ls":
 		return a.ForwardList()
 	case "service":
-		return fmt.Errorf("forward service: use cauteum service expose")
+		return fmt.Errorf("forward service: use cautem service expose")
 	default:
 		return fmt.Errorf("unknown forward subcommand %q", args[0])
 	}
@@ -669,7 +669,7 @@ func runForward(a *service.App, args []string) error {
 
 func runService(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum service expose|list|get|delete …")
+		return fmt.Errorf("usage: cautem service expose|list|get|delete …")
 	}
 	switch args[0] {
 	case "expose":
@@ -682,7 +682,7 @@ func runService(a *service.App, args []string) error {
 		return a.ServiceList()
 	case "get":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum service get <sandbox> [service]")
+			return fmt.Errorf("usage: cautem service get <sandbox> [service]")
 		}
 		name := "default"
 		if len(args) > 2 {
@@ -691,7 +691,7 @@ func runService(a *service.App, args []string) error {
 		return a.ServiceGet(name)
 	case "delete", "rm":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum service delete <sandbox> [service]")
+			return fmt.Errorf("usage: cautem service delete <sandbox> [service]")
 		}
 		name := "default"
 		if len(args) > 2 {
@@ -705,7 +705,7 @@ func runService(a *service.App, args []string) error {
 
 func runRule(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum rule get|approve|reject|history|clear …")
+		return fmt.Errorf("usage: cautem rule get|approve|reject|history|clear …")
 	}
 	switch args[0] {
 	case "get", "list", "ls":
@@ -752,7 +752,7 @@ func runRule(a *service.App, args []string) error {
 			case sandbox == "":
 				sandbox = arg
 			default:
-				return fmt.Errorf("usage: cauteum rule approve-all [NAME] [--include-security-flagged]")
+				return fmt.Errorf("usage: cautem rule approve-all [NAME] [--include-security-flagged]")
 			}
 		}
 		return a.RuleApproveAll(sandbox, includeSecurityFlagged)
@@ -794,7 +794,7 @@ func parseRuleAction(args []string) (id, reason string, err error) {
 		}
 	}
 	if id == "" {
-		return "", "", fmt.Errorf("usage: cauteum rule approve|reject [--chunk-id] ID [--reason TEXT]")
+		return "", "", fmt.Errorf("usage: cautem rule approve|reject [--chunk-id] ID [--reason TEXT]")
 	}
 	return id, reason, nil
 }
@@ -820,14 +820,14 @@ func runLogs(a *service.App, args []string) error {
 		}
 	}
 	if !opt.All && len(opt.Names) == 0 {
-		return fmt.Errorf("usage: cauteum logs <name> [--tail] [-n N] [--since 5m] [--source sandbox] [--level warn]")
+		return fmt.Errorf("usage: cautem logs <name> [--tail] [-n N] [--since 5m] [--source sandbox] [--level warn]")
 	}
 	return a.LogsOpts(opt)
 }
 
 func runInference(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum inference get|set|update|list|show|local")
+		return fmt.Errorf("usage: cautem inference get|set|update|list|show|local")
 	}
 	switch args[0] {
 	case "get":
@@ -857,10 +857,10 @@ func runInference(a *service.App, args []string) error {
 
 func runPolicy(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum policy get|set|update|list|delete|check …")
+		return fmt.Errorf("usage: cautem policy get|set|update|list|delete|check …")
 	}
 	switch args[0] {
-	case "check": // cauteum-only validation helper
+	case "check": // cautem-only validation helper
 		path := "policies/default.yaml"
 		if len(args) > 1 {
 			path = args[1]
@@ -908,7 +908,7 @@ func runPolicy(a *service.App, args []string) error {
 			return a.PolicyGlobalGet()
 		}
 		if name == "" {
-			return fmt.Errorf("usage: cauteum policy list <sandbox>")
+			return fmt.Errorf("usage: cautem policy list <sandbox>")
 		}
 		return a.PolicyList(name)
 	case "delete", "rm":
@@ -919,7 +919,7 @@ func runPolicy(a *service.App, args []string) error {
 			}
 		}
 		if !global {
-			return fmt.Errorf("usage: cauteum policy delete --global")
+			return fmt.Errorf("usage: cautem policy delete --global")
 		}
 		fmt.Println("policy delete --global: clearing gateway global policy")
 		return a.PolicyGlobalClear()
@@ -930,7 +930,7 @@ func runPolicy(a *service.App, args []string) error {
 
 func runPolicyUpdate(a *service.App, args []string) error {
 	if len(args) < 1 {
-		return fmt.Errorf("usage: cauteum policy update <sandbox> --add-endpoint SPEC [--add-allow SPEC] [--add-deny SPEC] [--binary PATH] [--wait]")
+		return fmt.Errorf("usage: cautem policy update <sandbox> --add-endpoint SPEC [--add-allow SPEC] [--add-deny SPEC] [--binary PATH] [--wait]")
 	}
 	name := args[0]
 	wait := false
@@ -972,7 +972,7 @@ func runPolicyUpdate(a *service.App, args []string) error {
 
 func runSandbox(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum sandbox create|list|get|stop|start|delete|exec|connect|upload|download|ssh-config|provider")
+		return fmt.Errorf("usage: cautem sandbox create|list|get|stop|start|delete|exec|connect|upload|download|ssh-config|provider")
 	}
 	switch args[0] {
 	case "create":
@@ -1233,22 +1233,22 @@ func runSandbox(a *service.App, args []string) error {
 		return a.SandboxList(opt)
 	case "get", "status":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox get <name>")
+			return fmt.Errorf("usage: cautem sandbox get <name>")
 		}
 		return a.SandboxStatus(args[1])
 	case "stop":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox stop <name>")
+			return fmt.Errorf("usage: cautem sandbox stop <name>")
 		}
 		return a.SandboxStop(args[1])
 	case "start":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox start <name>")
+			return fmt.Errorf("usage: cautem sandbox start <name>")
 		}
 		return a.SandboxStart(args[1])
 	case "rm", "remove", "delete":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox delete <name>")
+			return fmt.Errorf("usage: cautem sandbox delete <name>")
 		}
 		return a.SandboxRemove(args[1])
 	case "exec":
@@ -1285,22 +1285,22 @@ func runSandbox(a *service.App, args []string) error {
 		return runSandboxTemplate(a, args[1:])
 	case "provider":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox provider list|attach|detach …")
+			return fmt.Errorf("usage: cautem sandbox provider list|attach|detach …")
 		}
 		switch args[1] {
 		case "list", "ls":
 			if len(args) < 3 {
-				return fmt.Errorf("usage: cauteum sandbox provider list <sandbox>")
+				return fmt.Errorf("usage: cautem sandbox provider list <sandbox>")
 			}
 			return a.SandboxProviderList(args[2])
 		case "attach":
 			if len(args) < 4 {
-				return fmt.Errorf("usage: cauteum sandbox provider attach <sandbox> <provider>")
+				return fmt.Errorf("usage: cautem sandbox provider attach <sandbox> <provider>")
 			}
 			return a.ProviderAttach(args[2], args[3])
 		case "detach":
 			if len(args) < 4 {
-				return fmt.Errorf("usage: cauteum sandbox provider detach <sandbox> <provider>")
+				return fmt.Errorf("usage: cautem sandbox provider detach <sandbox> <provider>")
 			}
 			return a.ProviderDetach(args[2], args[3])
 		default:
@@ -1331,7 +1331,7 @@ func runExec(a *service.App, args []string) error {
 
 func runSandboxTemplate(a *service.App, args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: cauteum sandbox template create|list|get|delete …")
+		return fmt.Errorf("usage: cautem sandbox template create|list|get|delete …")
 	}
 	switch args[0] {
 	case "create":
@@ -1402,12 +1402,12 @@ func runSandboxTemplate(a *service.App, args []string) error {
 		return a.TemplateList()
 	case "get":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox template get <name>")
+			return fmt.Errorf("usage: cautem sandbox template get <name>")
 		}
 		return a.TemplateGet(args[1])
 	case "delete", "rm":
 		if len(args) < 2 {
-			return fmt.Errorf("usage: cauteum sandbox template delete <name>")
+			return fmt.Errorf("usage: cautem sandbox template delete <name>")
 		}
 		return a.TemplateDelete(args[1])
 	default:
@@ -1417,7 +1417,7 @@ func runSandboxTemplate(a *service.App, args []string) error {
 
 func runTerm(a *service.App, _ []string) error {
 	if !term.IsTerminal(int(os.Stdin.Fd())) {
-		return fmt.Errorf("cauteum term: requires an interactive terminal")
+		return fmt.Errorf("cautem term: requires an interactive terminal")
 	}
 	act, err := tuipkg.Run(a)
 	if err != nil {
@@ -1489,7 +1489,7 @@ func runSSHProxy(a *service.App, args []string) error {
 }
 
 // runProxy is the sidecar / host CONNECT proxy entrypoint.
-// Usage: cauteum proxy --listen ADDR --policy PATH [--ca-out PATH]
+// Usage: cautem proxy --listen ADDR --policy PATH [--ca-out PATH]
 func runProxy(a *service.App, args []string) error {
 	opt := service.ProxyOpts{}
 	for i := 0; i < len(args); i++ {
@@ -1531,7 +1531,7 @@ func runProxy(a *service.App, args []string) error {
 			i++
 			opt.LogDir = args[i]
 		case "--help", "-h":
-			fmt.Fprintln(os.Stderr, "usage: cauteum proxy --listen ADDR --policy PATH [--ca-out PATH] [--gateway URL] [--sandbox NAME]")
+			fmt.Fprintln(os.Stderr, "usage: cautem proxy --listen ADDR --policy PATH [--ca-out PATH] [--gateway URL] [--sandbox NAME]")
 			return nil
 		default:
 			if strings.HasPrefix(args[i], "-") {
@@ -1541,7 +1541,7 @@ func runProxy(a *service.App, args []string) error {
 		}
 	}
 	if strings.TrimSpace(opt.Policy) == "" {
-		return fmt.Errorf("usage: cauteum proxy --listen ADDR --policy PATH [--ca-out PATH]")
+		return fmt.Errorf("usage: cautem proxy --listen ADDR --policy PATH [--ca-out PATH]")
 	}
 	return a.Proxy(opt)
 }

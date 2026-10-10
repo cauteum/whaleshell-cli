@@ -21,27 +21,27 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/cautem/cauteum-cli/internal/autoprovider"
-	"github.com/cautem/cauteum-cli/internal/logger"
-	"github.com/cautem/cauteum-cli/internal/osargs"
-	"github.com/cautem/cauteum-cli/internal/outfmt"
-	"github.com/cautem/cauteum-cli/internal/policywait"
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cautem/cauteum-cli/internal/storage/templates"
-	"github.com/cautem/cauteum-cli/internal/ui"
-	"github.com/cautem/cauteum-core/defaults"
-	"github.com/cautem/cauteum-core/engine"
-	"github.com/cautem/cauteum-core/env"
-	"github.com/cautem/cauteum-core/policy"
-	display "github.com/cautem/cauteum-display"
-	"github.com/cautem/cauteum-driver/driver"
-	_ "github.com/cautem/cauteum-driver/driver/all"
-	"github.com/cautem/cauteum-proxy/proxy"
-	"github.com/cautem/cauteum-runtime/inference"
-	"github.com/cautem/cauteum-runtime/relayclient"
-	"github.com/cautem/cauteum-runtime/sandbox"
-	"github.com/cautem/cauteum-runtime/secrets"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/autoprovider"
+	"github.com/cautem/cautem-cli/internal/logger"
+	"github.com/cautem/cautem-cli/internal/osargs"
+	"github.com/cautem/cautem-cli/internal/outfmt"
+	"github.com/cautem/cautem-cli/internal/policywait"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-cli/internal/storage/templates"
+	"github.com/cautem/cautem-cli/internal/ui"
+	"github.com/cautem/cautem-core/defaults"
+	"github.com/cautem/cautem-core/engine"
+	"github.com/cautem/cautem-core/env"
+	"github.com/cautem/cautem-core/policy"
+	display "github.com/cautem/cautem-display"
+	"github.com/cautem/cautem-driver/driver"
+	_ "github.com/cautem/cautem-driver/driver/all"
+	"github.com/cautem/cautem-proxy/proxy"
+	"github.com/cautem/cautem-runtime/inference"
+	"github.com/cautem/cautem-runtime/relayclient"
+	"github.com/cautem/cautem-runtime/sandbox"
+	"github.com/cautem/cautem-runtime/secrets"
+	"github.com/cautem/cautem-sdk/go/cautem"
 	"github.com/cautem/slogx"
 	"golang.org/x/term"
 	"gopkg.in/yaml.v3"
@@ -123,14 +123,14 @@ func selectedDriver() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	selected := strings.ToLower(strings.TrimSpace(os.Getenv("CAUTEUM_DRIVER")))
+	selected := strings.ToLower(strings.TrimSpace(os.Getenv("CAUTEM_DRIVER")))
 	if selected != "" {
 		selected = normalizeSelectedDriver(selected)
 		if selected != "docker" && selected != "podman" && selected != "vm" && selected != "kubernetes" {
-			return "", fmt.Errorf("unsupported CAUTEUM_DRIVER %q", selected)
+			return "", fmt.Errorf("unsupported CAUTEM_DRIVER %q", selected)
 		}
 		if len(configured) > 0 && !slices.Contains(configured, selected) {
-			return "", fmt.Errorf("CAUTEUM_DRIVER %q is not selected by openshell.gateway.compute_drivers", selected)
+			return "", fmt.Errorf("CAUTEM_DRIVER %q is not selected by openshell.gateway.compute_drivers", selected)
 		}
 		return selected, nil
 	}
@@ -143,7 +143,7 @@ func selectedDriver() (string, error) {
 	if slices.Contains(configured, "docker") {
 		return "docker", nil
 	}
-	return "", fmt.Errorf("multiple compute drivers are configured; set CAUTEUM_DRIVER to one of: %s", strings.Join(configured, ", "))
+	return "", fmt.Errorf("multiple compute drivers are configured; set CAUTEM_DRIVER to one of: %s", strings.Join(configured, ", "))
 }
 
 func normalizeSelectedDriver(selected string) string {
@@ -166,15 +166,15 @@ func envTruthy(key string) bool {
 
 // Banner is the short CLI intro.
 func (a *App) Banner() string {
-	return "cauteum — agent sandbox CLI"
+	return "cautem — agent sandbox CLI"
 }
 
 // Version reports the CLI stub version.
 // BuildVersion is set at release time:
-// -ldflags "-X github.com/cautem/cauteum-cli/internal/service.BuildVersion=…".
+// -ldflags "-X github.com/cautem/cautem-cli/internal/service.BuildVersion=…".
 var BuildVersion = "0.1.0-alpha.1"
 
-func (a *App) Version() string { return "cauteum " + BuildVersion }
+func (a *App) Version() string { return "cautem " + BuildVersion }
 
 // Health probes Docker Engine / Podman API.
 func (a *App) Health() error {
@@ -182,7 +182,7 @@ func (a *App) Health() error {
 		hint := "check DOCKER_HOST / Docker Desktop"
 		switch a.DriverName {
 		case "podman":
-			hint = "check CAUTEUM_PODMAN_SOCKET / podman.socket (systemctl --user start podman.socket)"
+			hint = "check CAUTEM_PODMAN_SOCKET / podman.socket (systemctl --user start podman.socket)"
 		case "vm":
 			return fmt.Errorf("health: vm driver is a spike stub (see docs/exp/MICROVM.md)")
 		case "kubernetes":
@@ -244,10 +244,10 @@ func (a *App) Health() error {
 			}
 		}
 	} else {
-		fmt.Printf("  gateway:          not selected (cauteum gateway ensure)\n")
+		fmt.Printf("  gateway:          not selected (cautem gateway ensure)\n")
 	}
-	if envTruthy("CAUTEUM_LANDLOCK_REQUIRED") && !landlockABIAtLeast(probe, 1) {
-		return fmt.Errorf("health: landlock gate failed (need ABI≥1; got %s). Unset CAUTEUM_LANDLOCK_REQUIRED on Docker Desktop / ABI 0 hosts", probe)
+	if envTruthy("CAUTEM_LANDLOCK_REQUIRED") && !landlockABIAtLeast(probe, 1) {
+		return fmt.Errorf("health: landlock gate failed (need ABI≥1; got %s). Unset CAUTEM_LANDLOCK_REQUIRED on Docker Desktop / ABI 0 hosts", probe)
 	}
 	return nil
 }
@@ -279,7 +279,7 @@ func (a *App) Doctor() error {
 	}
 	u, err := a.currentGatewayURL()
 	if err != nil || u == "" {
-		return fmt.Errorf("doctor: no gateway selected (cauteum gateway ensure|add|select)")
+		return fmt.Errorf("doctor: no gateway selected (cautem gateway ensure|add|select)")
 	}
 	ctx, cancel := a.withTimeout(TimeoutAPIShort)
 	defer cancel()
@@ -361,7 +361,7 @@ func leadingVersionNumber(version string) (int, bool) {
 }
 
 // CleanupDockerTestResources removes only disposable resources created by the
-// Testcontainers/Cauteum test lanes. It deliberately does not use
+// Testcontainers/cautem test lanes. It deliberately does not use
 // `docker system prune`: named volumes, running containers and user networks
 // are outside this command's scope.
 type CleanupReport struct {
@@ -392,7 +392,7 @@ func (a *App) CleanupDockerTestResources(ctx context.Context, confirm bool) erro
 	if err != nil {
 		return err
 	}
-	containers, err := list("ps", "-aq", "--filter", "label=cauteum=1", "--filter", "status=exited")
+	containers, err := list("ps", "-aq", "--filter", "label=cautem=1", "--filter", "status=exited")
 	if err != nil {
 		return err
 	}
@@ -506,7 +506,7 @@ func (a *App) PolicyGlobalGet() error {
 	if err != nil {
 		return err
 	}
-	b, err := cauteum.NewWithToken(u, a.gatewayTokenForURL(u)).GetGlobalPolicy(a.apiCtx())
+	b, err := cautem.NewWithToken(u, a.gatewayTokenForURL(u)).GetGlobalPolicy(a.apiCtx())
 	if err != nil {
 		return err
 	}
@@ -534,7 +534,7 @@ func (a *App) PolicyGlobalSet(path string) error {
 	if err := doc.Validate(); err != nil {
 		return err
 	}
-	if err := cauteum.NewWithToken(u, a.gatewayTokenForURL(u)).PutGlobalPolicy(a.apiCtx(), b); err != nil {
+	if err := cautem.NewWithToken(u, a.gatewayTokenForURL(u)).PutGlobalPolicy(a.apiCtx(), b); err != nil {
 		return err
 	}
 	fmt.Printf("policy global set: ok url=%s bytes=%d\n", u, len(b))
@@ -547,7 +547,7 @@ func (a *App) PolicyGlobalClear() error {
 	if err != nil {
 		return err
 	}
-	if err := cauteum.NewWithToken(u, a.gatewayTokenForURL(u)).PutGlobalPolicy(a.apiCtx(), nil); err != nil {
+	if err := cautem.NewWithToken(u, a.gatewayTokenForURL(u)).PutGlobalPolicy(a.apiCtx(), nil); err != nil {
 		return err
 	}
 	fmt.Println("policy delete --global: ok")
@@ -583,7 +583,7 @@ func (a *App) PolicySet(sandboxName, path string, wait bool) error {
 	var appliedBytes []byte
 
 	if gw, err := a.currentGatewayURL(); err == nil && gw != "" {
-		c := cauteum.NewWithToken(gw, a.gatewayTokenForURL(gw))
+		c := cautem.NewWithToken(gw, a.gatewayTokenForURL(gw))
 		ctx, cancel := a.withTimeout(TimeoutAPILong)
 		defer cancel()
 		if _, err := c.Healthz(ctx); err == nil {
@@ -605,7 +605,7 @@ func (a *App) PolicySet(sandboxName, path string, wait bool) error {
 			if a.Docker != nil {
 				hostPath, err := a.Docker.PolicyHostPath(ctx, sandboxName)
 				if err != nil {
-					return fmt.Errorf("policy set: gateway stored base, but live bind: %w (run: cauteum provider effective %s | …)", err, sandboxName)
+					return fmt.Errorf("policy set: gateway stored base, but live bind: %w (run: cautem provider effective %s | …)", err, sandboxName)
 				}
 				if err := writeFileInPlace(hostPath, eff); err != nil {
 					return fmt.Errorf("policy set: write %s: %w", hostPath, err)
@@ -715,7 +715,7 @@ func (a *App) PolicyUpdate(sandbox string, endpoints, allows, denies, binaries [
 	if err != nil {
 		return err
 	}
-	tmp, err := os.CreateTemp("", "cauteum-policy-update-*.yaml")
+	tmp, err := os.CreateTemp("", "cautem-policy-update-*.yaml")
 	if err != nil {
 		return err
 	}
@@ -829,7 +829,7 @@ func (a *App) mergeGatewayGlobal(doc policy.Document) (policy.Document, error) {
 	if err != nil || u == "" {
 		return doc, nil
 	}
-	b, err := cauteum.NewWithToken(u, a.gatewayTokenForURL(u)).GetGlobalPolicy(a.apiCtx())
+	b, err := cautem.NewWithToken(u, a.gatewayTokenForURL(u)).GetGlobalPolicy(a.apiCtx())
 	if err != nil || len(bytesTrim(b)) == 0 {
 		return doc, nil
 	}
@@ -882,7 +882,7 @@ type SandboxCreateOpts struct {
 	DisplayPort    int
 	OpenDisplay    bool
 	Labels         map[string]string
-	NoHostInternal bool // skip host.cauteum.internal ExtraHosts
+	NoHostInternal bool // skip host.cautem.internal ExtraHosts
 	GatewayURL     string
 	From           string // BYOC / community image alias
 	NoVolume       bool   // skip persist GuestData volume (default: persist)
@@ -969,7 +969,7 @@ func (a *App) SandboxCreate(opt SandboxCreateOpts) error {
 		}
 	}
 	if gwURL == "" && (!opt.NoProxy || len(opt.Providers) > 0) {
-		return fmt.Errorf("sandbox create: gateway required for proxy/providers (cauteum gateway ensure)")
+		return fmt.Errorf("sandbox create: gateway required for proxy/providers (cautem gateway ensure)")
 	}
 	if !opt.NoCredentialWarnings {
 		hints := map[string][]env.ProfileHint{}
@@ -1013,7 +1013,7 @@ func (a *App) SandboxCreate(opt SandboxCreateOpts) error {
 		if am != "manual" && am != "auto" {
 			return fmt.Errorf("sandbox create: --approval-mode must be manual|auto")
 		}
-		opt.Labels["cauteum.approval-mode"] = am
+		opt.Labels["cautem.approval-mode"] = am
 	}
 
 	spec := driver.Spec{
@@ -1026,7 +1026,7 @@ func (a *App) SandboxCreate(opt SandboxCreateOpts) error {
 		NoHarden:         opt.NoHarden,
 		Labels:           opt.Labels,
 		PersistVolume:    !opt.NoVolume,
-		GPU:              opt.GPU || envTruthy("CAUTEUM_GPU"),
+		GPU:              opt.GPU || envTruthy("CAUTEM_GPU"),
 		CDIDevices:       append([]string{}, opt.CDIDevices...),
 		CPU:              opt.CPU,
 		PidsLimit:        opt.PidsLimit,
@@ -1108,7 +1108,7 @@ func (a *App) SandboxCreate(opt SandboxCreateOpts) error {
 		if b, err := os.ReadFile(basePath); err == nil {
 			baseYAML = string(b)
 		}
-		_ = cli.UpsertSandbox(ctx, cauteum.Sandbox{
+		_ = cli.UpsertSandbox(ctx, cautem.Sandbox{
 			Name:              h.Name,
 			ID:                string(h.ID),
 			Image:             h.Image,
@@ -1127,7 +1127,7 @@ func (a *App) SandboxCreate(opt SandboxCreateOpts) error {
 		notes = append(notes, "proxy=off")
 	}
 	if !opt.NoHarden {
-		notes = append(notes, "harden=cauteum-init")
+		notes = append(notes, "harden=cautem-init")
 	} else {
 		notes = append(notes, "harden=off")
 	}
@@ -1157,13 +1157,13 @@ func (a *App) SandboxCreate(opt SandboxCreateOpts) error {
 		}
 	}
 	if spec.EnableSSH {
-		fmt.Printf("ssh: via gateway relay (cauteum sandbox connect %s | --editor cursor|vscode)\n", h.Name)
+		fmt.Printf("ssh: via gateway relay (cautem sandbox connect %s | --editor cursor|vscode)\n", h.Name)
 	}
 	if spec.GPU {
 		fmt.Printf("gpu: CDI DeviceRequests enabled (see docs/exp/GPU.md)\n")
 	}
 	if !opt.NoVolume {
-		fmt.Printf("volume: cauteum-data-%s → %s (retained across stop/start)\n", h.Name, defaults.GuestData)
+		fmt.Printf("volume: cautem-data-%s → %s (retained across stop/start)\n", h.Name, defaults.GuestData)
 	}
 	if opt.Upload != "" {
 		dest := "/workspace/" + filepath.Base(opt.Upload)
@@ -1420,7 +1420,7 @@ func (a *App) SandboxStatus(nameOrID string) error {
 	ctx, cancel := a.withTimeout(TimeoutAPI)
 	defer cancel()
 	if gw, err := a.currentGatewayURL(); err == nil && gw != "" {
-		sandbox, err := cauteum.NewWithToken(gw, a.gatewayTokenForURL(gw)).GetControlSandbox(ctx, a.GlobalWorkspace, nameOrID)
+		sandbox, err := cautem.NewWithToken(gw, a.gatewayTokenForURL(gw)).GetControlSandbox(ctx, a.GlobalWorkspace, nameOrID)
 		if err != nil {
 			return fmt.Errorf("sandbox get: %w", err)
 		}
@@ -1497,7 +1497,7 @@ func (a *App) LogsOpts(opt LogsOpts) error {
 	return a.LogsToOpts(a.CommandContext(), opt, os.Stdout)
 }
 
-// LogsTo streams sandbox container logs to w (used by `cauteum term` live observation panel).
+// LogsTo streams sandbox container logs to w (used by `cautem term` live observation panel).
 func (a *App) LogsTo(ctx context.Context, name string, follow bool, w io.Writer) error {
 	return a.LogsToOpts(ctx, LogsOpts{Names: []string{name}, Follow: follow}, w)
 }
@@ -1516,9 +1516,9 @@ func (a *App) LogsToOpts(ctx context.Context, opt LogsOpts, w io.Writer) error {
 	}
 	// Prefer the authorized workspace-scoped control API when a gateway is selected.
 	if gw, err := a.currentGatewayURL(); err == nil && gw != "" {
-		c := cauteum.NewWithToken(gw, a.gatewayTokenForURL(gw))
+		c := cautem.NewWithToken(gw, a.gatewayTokenForURL(gw))
 		if _, err := c.Healthz(ctx); err == nil {
-			var sandboxes []cauteum.Sandbox
+			var sandboxes []cautem.Sandbox
 			if opt.All {
 				sandboxes, err = c.ListControlSandboxes(ctx, "", true)
 				if err != nil {
@@ -1529,9 +1529,9 @@ func (a *App) LogsToOpts(ctx context.Context, opt LogsOpts, w io.Writer) error {
 				if workspace == "" {
 					workspace = "default"
 				}
-				sandboxes = make([]cauteum.Sandbox, 0, len(names))
+				sandboxes = make([]cautem.Sandbox, 0, len(names))
 				for _, name := range names {
-					sandboxes = append(sandboxes, cauteum.Sandbox{Name: name, Workspace: workspace})
+					sandboxes = append(sandboxes, cautem.Sandbox{Name: name, Workspace: workspace})
 				}
 			}
 			if opt.Follow {
@@ -1629,7 +1629,7 @@ func (a *App) GatewayAdd(name, url string) error {
 func (a *App) GatewayAddParsed(parsed osargs.GatewayAdd) error {
 	name, url := parsed.Name, parsed.Endpoint
 	if name == "" || url == "" {
-		return fmt.Errorf("usage: cauteum gateway add <endpoint> [--name NAME] [--local] [--oidc-issuer URL]")
+		return fmt.Errorf("usage: cautem gateway add <endpoint> [--name NAME] [--local] [--oidc-issuer URL]")
 	}
 	cfg, path, err := gwconfig.Load()
 	if err != nil {
@@ -1663,7 +1663,7 @@ func (a *App) GatewayAddParsed(parsed osargs.GatewayAdd) error {
 	fmt.Printf("gateway add: ok name=%s url=%s config=%s\n", name, url, path)
 	if g.OIDCIssuer != "" {
 		fmt.Printf("gateway add: oidc issuer=%s client_id=%s\n", g.OIDCIssuer, g.OIDCClientID)
-		fmt.Printf("gateway add: run `cauteum gateway login` for Authorization Code + PKCE\n")
+		fmt.Printf("gateway add: run `cautem gateway login` for Authorization Code + PKCE\n")
 	}
 	return nil
 }
@@ -1721,7 +1721,7 @@ func (a *App) GatewayListRemote() error {
 	}
 	u := gwconfig.CurrentURL(cfg)
 	if u == "" {
-		return fmt.Errorf("gateway list: no current gateway (cauteum gateway add …)")
+		return fmt.Errorf("gateway list: no current gateway (cautem gateway add …)")
 	}
 	ctx, cancel := a.withTimeout(TimeoutAPI)
 	defer cancel()
@@ -1738,7 +1738,7 @@ func (a *App) GatewayListRemote() error {
 	return nil
 }
 
-// ExecOpts for cauteum sandbox exec.
+// ExecOpts for cautem sandbox exec.
 type ExecOpts struct {
 	Name    string
 	Argv    []string
@@ -1757,7 +1757,7 @@ func (a *App) Exec(opt ExecOpts) error {
 		return err
 	}
 	if opt.Name == "" || len(opt.Argv) == 0 {
-		return fmt.Errorf("usage: cauteum sandbox exec [--name] <name> [--workdir DIR] [--env K=V] -- CMD")
+		return fmt.Errorf("usage: cautem sandbox exec [--name] <name> [--workdir DIR] [--env K=V] -- CMD")
 	}
 	log.Info("executing in sandbox", slog.Bool("tty", opt.TTY))
 	// Always overlay credential placeholders from effective policy so attach/refresh
@@ -1803,15 +1803,15 @@ func (a *App) emitProc(sandbox, activity, details string, exitCode int) {
 	if activity == "EXIT" {
 		text = fmt.Sprintf("%s OCSF PROC:EXIT [INFO] ALLOWED %s [exit:%d]", ts.Format(time.RFC3339Nano), details, exitCode)
 	}
-	c := cauteum.NewWithToken(gw, a.gatewayTokenForURL(gw))
+	c := cautem.NewWithToken(gw, a.gatewayTokenForURL(gw))
 	ctx, cancel := a.withTimeout(TimeoutEmit)
 	defer cancel()
-	_ = c.PostLogs(ctx, sandbox, []cauteum.LogLine{{
+	_ = c.PostLogs(ctx, sandbox, []cautem.LogLine{{
 		TS: ts, Source: "proc", Level: "INFO", Text: text,
 	}})
 }
 
-// RunOpts for cauteum run (ensure sandbox + exec).
+// RunOpts for cautem run (ensure sandbox + exec).
 type RunOpts struct {
 	Name        string
 	Image       string
@@ -1945,12 +1945,12 @@ type ProxyOpts struct {
 	LogDir     string // optional daily OCSF file dir (default /var/log)
 }
 
-// Proxy runs cauteum-proxy until interrupted.
+// Proxy runs cautem-proxy until interrupted.
 func (a *App) Proxy(opt ProxyOpts) error {
 	const op = "proxy.serve"
 	ctx, cancel := a.withCancel()
 	defer cancel()
-	log := logger.Setup(ctx, logger.Options{Service: "cauteum-proxy"})
+	log := logger.Setup(ctx, logger.Options{Service: "cautem-proxy"})
 	ctx = logger.ToContext(ctx, log)
 	log = log.With("op", op)
 
@@ -1973,26 +1973,26 @@ func (a *App) Proxy(opt ProxyOpts) error {
 	}
 	logDir := opt.LogDir
 	if logDir == "" {
-		logDir = os.Getenv("CAUTEUM_LOG_DIR")
+		logDir = os.Getenv("CAUTEM_LOG_DIR")
 	}
 	if logDir == "" {
 		logDir = "/var/log"
 	}
 	gwURL := opt.GatewayURL
 	if gwURL == "" {
-		gwURL = os.Getenv("CAUTEUM_GATEWAY_URL")
+		gwURL = os.Getenv("CAUTEM_GATEWAY_URL")
 	}
 	sandbox := opt.Sandbox
 	if sandbox == "" {
-		sandbox = os.Getenv("CAUTEUM_SANDBOX")
+		sandbox = os.Getenv("CAUTEM_SANDBOX")
 	}
-	// OpenShell-style: CAUTEUM_GATEWAY_URL must resolve via ExtraHosts
-	// (host.cauteum.internal → host-gateway). No hostname guessing.
-	var gw *cauteum.Client
+	// OpenShell-style: CAUTEM_GATEWAY_URL must resolve via ExtraHosts
+	// (host.cautem.internal → host-gateway). No hostname guessing.
+	var gw *cautem.Client
 	var pusher proxy.LogPusher
 	if gwURL != "" && sandbox != "" {
 		gwURL = GuestGatewayURL(gwURL)
-		gw = cauteum.NewWithToken(gwURL, sandboxToken)
+		gw = cautem.NewWithToken(gwURL, sandboxToken)
 		pusher = gatewayAuditPusher{c: gw}
 		if sandboxToken == "" {
 			log.Warn("no sandbox supervisor token; gateway calls will be rejected", "env", EnvSandboxToken)
@@ -2012,7 +2012,7 @@ func (a *App) Proxy(opt ProxyOpts) error {
 			defer cancel()
 			return relayclient.ReportPolicyStatus(callCtx, relayclient.Config{
 				GatewayURL:          gwURL,
-				GatewayGRPCEndpoint: strings.TrimSpace(os.Getenv("CAUTEUM_GATEWAY_GRPC_ENDPOINT")),
+				GatewayGRPCEndpoint: strings.TrimSpace(os.Getenv("CAUTEM_GATEWAY_GRPC_ENDPOINT")),
 				Sandbox:             sandbox,
 				Token:               sandboxToken,
 				TLSConfig:           policyTLSConfig,
@@ -2047,8 +2047,8 @@ func (a *App) Proxy(opt ProxyOpts) error {
 		go func() {
 			_ = relayclient.Run(ctx, relayclient.Config{
 				GatewayURL:              gwURL,
-				GatewayGRPCEndpoint:     strings.TrimSpace(os.Getenv("CAUTEUM_GATEWAY_GRPC_ENDPOINT")),
-				SupervisorControlSocket: strings.TrimSpace(os.Getenv("CAUTEUM_SUPERVISOR_CONTROL_SOCKET")),
+				GatewayGRPCEndpoint:     strings.TrimSpace(os.Getenv("CAUTEM_GATEWAY_GRPC_ENDPOINT")),
+				SupervisorControlSocket: strings.TrimSpace(os.Getenv("CAUTEM_SUPERVISOR_CONTROL_SOCKET")),
 				Sandbox:                 sandbox,
 				Token:                   sandboxToken,
 				SSHSocket:               sock,
@@ -2075,7 +2075,7 @@ func (a *App) Proxy(opt ProxyOpts) error {
 	return srv.ListenAndServe(ctx, listen)
 }
 
-func (a *App) refreshProxySecrets(srv *proxy.Server, c *cauteum.Client, sandbox string) error {
+func (a *App) refreshProxySecrets(srv *proxy.Server, c *cautem.Client, sandbox string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), TimeoutAPIShort)
 	defer cancel()
 	m, err := c.ResolveSecrets(ctx, sandbox)
@@ -2129,7 +2129,7 @@ func gatewayProxySecretSnapshot(environment, gateway map[string]string, managed 
 }
 
 // GuestGatewayURL rewrites loopback (and legacy host.docker.internal) gateway URLs
-// to host.cauteum.internal — the OpenShell-style host-gateway alias injected via ExtraHosts.
+// to host.cautem.internal — the OpenShell-style host-gateway alias injected via ExtraHosts.
 func GuestGatewayURL(gwURL string) string {
 	raw := strings.TrimSpace(gwURL)
 	u, err := url.Parse(raw)
@@ -2149,16 +2149,16 @@ func GuestGatewayURL(gwURL string) string {
 
 // gatewayAuditPusher adapts SDK client to proxy.LogPusher.
 type gatewayAuditPusher struct {
-	c *cauteum.Client
+	c *cautem.Client
 }
 
 func (g gatewayAuditPusher) PostLogs(ctx context.Context, sandbox string, lines []proxy.AuditLine) error {
 	if g.c == nil || len(lines) == 0 {
 		return nil
 	}
-	out := make([]cauteum.LogLine, len(lines))
+	out := make([]cautem.LogLine, len(lines))
 	for i, l := range lines {
-		out[i] = cauteum.LogLine{TS: l.TS, Source: l.Source, Level: l.Level, Text: l.Text}
+		out[i] = cautem.LogLine{TS: l.TS, Source: l.Source, Level: l.Level, Text: l.Text}
 	}
 	return g.c.PostLogs(ctx, sandbox, out)
 }
@@ -2173,7 +2173,7 @@ func hostEnvForPolicy(doc policy.Document) []string {
 	return out
 }
 
-// credentialPlaceholdersForSandbox returns cauteum:resolve:env placeholders for the
+// credentialPlaceholdersForSandbox returns cautem:resolve:env placeholders for the
 // sandbox effective policy credential keys (and attached provider guest keys).
 // Profiles with inject_env: false (Cursor) are skipped — Agent validates the key
 // client-side and rejects placeholders.
@@ -2284,16 +2284,16 @@ func proxySecretsForPolicy(doc policy.Document) []string {
 
 // EnvSandboxToken carries the sandbox-scoped supervisor token into the proxy
 // sidecar only (never the sandbox container).
-const EnvSandboxToken = "CAUTEUM_SANDBOX_TOKEN"
+const EnvSandboxToken = "CAUTEM_SANDBOX_TOKEN"
 
 // EnvSSHSocket is set by the driver when the sidecar shares the sshd socket.
-const EnvSSHSocket = "CAUTEUM_SSH_SOCKET"
-const EnvTargetDialSocket = "CAUTEUM_TCP_DIAL_SOCKET"
+const EnvSSHSocket = "CAUTEM_SSH_SOCKET"
+const EnvTargetDialSocket = "CAUTEM_TCP_DIAL_SOCKET"
 
-// proxyGatewayEnv adds CAUTEUM_GATEWAY_URL / CAUTEUM_SANDBOX /
-// CAUTEUM_SANDBOX_TOKEN so the sidecar can resolve encrypted provider
+// proxyGatewayEnv adds CAUTEM_GATEWAY_URL / CAUTEM_SANDBOX /
+// CAUTEM_SANDBOX_TOKEN so the sidecar can resolve encrypted provider
 // secrets, push OCSF logs and run the supervisor relay (OpenShell-like).
-// When an inference route is configured, also inject CAUTEUM_INFERENCE_* for inference.local.
+// When an inference route is configured, also inject CAUTEM_INFERENCE_* for inference.local.
 func (a *App) proxyGatewayEnv(sandbox, gwURL, sandboxToken string) []string {
 	var out []string
 	if gwURL == "" {
@@ -2305,19 +2305,19 @@ func (a *App) proxyGatewayEnv(sandbox, gwURL, sandboxToken string) []string {
 		return out
 	}
 	guestGW := GuestGatewayURL(gwURL)
-	out = append(out, "CAUTEUM_GATEWAY_URL="+guestGW)
+	out = append(out, "CAUTEM_GATEWAY_URL="+guestGW)
 	if sandbox != "" {
-		out = append(out, "CAUTEUM_SANDBOX="+sandbox)
+		out = append(out, "CAUTEM_SANDBOX="+sandbox)
 	}
 	if sandboxToken != "" {
 		out = append(out, EnvSandboxToken+"="+sandboxToken)
 	}
-	out = append(out, "CAUTEUM_LOG_DIR=/var/log")
+	out = append(out, "CAUTEM_LOG_DIR=/var/log")
 	out = append(out, inferenceProxyEnv(a.clientFor(gwURL))...)
 	return out
 }
 
-func inferenceProxyEnv(c *cauteum.Client) []string {
+func inferenceProxyEnv(c *cautem.Client) []string {
 	ctx, cancel := context.WithTimeout(context.Background(), TimeoutAPIShort)
 	defer cancel()
 	route, err := c.GetInference(ctx)
@@ -2325,24 +2325,24 @@ func inferenceProxyEnv(c *cauteum.Client) []string {
 		return nil
 	}
 	out := []string{
-		"CAUTEUM_INFERENCE_MODEL=" + route.Model,
-		fmt.Sprintf("CAUTEUM_INFERENCE_TIMEOUT=%d", route.TimeoutSec),
+		"CAUTEM_INFERENCE_MODEL=" + route.Model,
+		fmt.Sprintf("CAUTEM_INFERENCE_TIMEOUT=%d", route.TimeoutSec),
 	}
 	if up := inferenceUpstreamForType(route.Provider, c, ctx); up != "" {
-		out = append(out, "CAUTEUM_INFERENCE_UPSTREAM="+up)
+		out = append(out, "CAUTEM_INFERENCE_UPSTREAM="+up)
 	}
 	rec, err := c.GetProvider(ctx, route.Provider)
 	if err == nil && len(rec.EnvVars) > 0 {
 		// Prefer first credential key from host env at create time (sidecar also refreshes via gateway).
 		if v, ok := os.LookupEnv(rec.EnvVars[0]); ok && v != "" {
-			out = append(out, "CAUTEUM_INFERENCE_API_KEY="+v)
+			out = append(out, "CAUTEM_INFERENCE_API_KEY="+v)
 		}
 	}
 	return out
 }
 
 type providerReader interface {
-	GetProvider(context.Context, string) (cauteum.ProviderRecord, error)
+	GetProvider(context.Context, string) (cautem.ProviderRecord, error)
 }
 
 func inferenceUpstreamForType(providerName string, c providerReader, ctx context.Context) string {
@@ -2392,7 +2392,7 @@ func (a *App) loadOrDenyAll(path string) (policy.Document, string, error) {
 		}
 		return doc, abs, nil
 	}
-	dir, err := os.MkdirTemp("", "cauteum-policy-*")
+	dir, err := os.MkdirTemp("", "cautem-policy-*")
 	if err != nil {
 		return policy.Document{}, "", err
 	}
@@ -2408,7 +2408,7 @@ func (a *App) loadOrDenyAll(path string) (policy.Document, string, error) {
 	return doc, abs, nil
 }
 
-// InitOpts for `cauteum init --agent …`.
+// InitOpts for `cautem init --agent …`.
 type InitOpts struct {
 	Agent string
 	Dir   string
@@ -2433,7 +2433,7 @@ func (a *App) Init(opt InitOpts) error {
 	default:
 		return fmt.Errorf("init: unknown agent %q (supported: cursor)", opt.Agent)
 	}
-	mod, err := findModuleDir("github.com/cautem/cauteum-cli")
+	mod, err := findModuleDir("github.com/cautem/cautem-cli")
 	if err != nil {
 		return err
 	}
@@ -2454,8 +2454,8 @@ func (a *App) Init(opt InitOpts) error {
 		return err
 	}
 	fmt.Printf("init: wrote %s\n", dst)
-	fmt.Printf("next: cauteum policy check %s\n", dst)
-	fmt.Printf("      cauteum agent login %s\n", agent)
+	fmt.Printf("next: cautem policy check %s\n", dst)
+	fmt.Printf("      cautem agent login %s\n", agent)
 	return nil
 }
 
@@ -2478,7 +2478,7 @@ func (a *App) AgentLogin(name string) error {
 			return fmt.Errorf("agent login: set at least one of %s", strings.Join(keys, ", "))
 		}
 		fmt.Println("ok: use --provider cursor (and --provider github if needed) on sandbox create")
-		fmt.Println("docs: https://cautem.github.io/cauteum-haven.github.io/guides/cursor/")
+		fmt.Println("docs: https://cautem.github.io/sandbox.dev/guides/cursor/")
 		return nil
 	default:
 		return fmt.Errorf("agent login: unknown agent %q (supported: cursor)", name)

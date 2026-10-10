@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cautem/cauteum-runtime/idp"
+	"github.com/cautem/cautem-runtime/idp"
 )
 
 func TestNewRejectsPublicNetworkHTTP(t *testing.T) {
@@ -124,7 +124,7 @@ func TestOIDCPKCELoginCreatesServerSideSession(t *testing.T) {
 			http.NotFound(w, r)
 			return
 		}
-		_ = json.NewEncoder(w).Encode(map[string]any{"issuer": issuerURL, "client_id": "console", "audience": "cauteum", "allow_insecure_http": true})
+		_ = json.NewEncoder(w).Encode(map[string]any{"issuer": issuerURL, "client_id": "console", "audience": "cautem", "allow_insecure_http": true})
 	}))
 	t.Cleanup(gateway.Close)
 

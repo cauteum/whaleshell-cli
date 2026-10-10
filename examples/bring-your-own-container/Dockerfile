@@ -1,8 +1,8 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 the cauteum authors
+# SPDX-FileCopyrightText: Copyright (c) 2026 the cautem authors
 # SPDX-License-Identifier: Apache-2.0
 #
-# Minimal BYOC image — run any Linux container as an cauteum sandbox.
-# Image requirements: https://cautem.github.io/cauteum-haven.github.io/reference/images/
+# Minimal BYOC image — run any Linux container as an cautem sandbox.
+# Image requirements: https://cautem.github.io/sandbox.dev/reference/images/
 
 FROM python:3.13-slim
 
@@ -20,5 +20,5 @@ COPY --chown=app:app app.py .
 EXPOSE 8080
 USER app
 
-# cauteum replaces ENTRYPOINT/CMD with cauteum-init; pass the start command after --.
+# cautem replaces ENTRYPOINT/CMD with cautem-init; pass the start command after --.
 CMD ["python", "app.py"]

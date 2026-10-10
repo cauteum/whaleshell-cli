@@ -1,11 +1,11 @@
 # GitHub provider — agent push inside a sandbox
 
 Goal: an agent **inside** the sandbox can `git push` / `gh` to your org.
-The host only seeds the token once; the guest sees `cauteum:resolve:env:GITHUB_TOKEN`,
+The host only seeds the token once; the guest sees `cautem:resolve:env:GITHUB_TOKEN`,
 and the sidecar rewrites it on egress.
 
-**Общий запуск + create:** [профили провайдеров](https://cautem.github.io/cauteum-haven.github.io/ru/guides/provider-profiles/)\
-**Cursor+Git:** [Docker](https://cautem.github.io/cauteum-haven.github.io/ru/providers/docker/).
+**Общий запуск + create:** [профили провайдеров](https://cautem.github.io/sandbox.dev/ru/guides/provider-profiles/)\
+**Cursor+Git:** [Docker](https://cautem.github.io/sandbox.dev/ru/providers/docker/).
 
 ## Prerequisites
 
@@ -13,67 +13,67 @@ and the sidecar rewrites it on egress.
 - Go toolchain + this workspace (`go.work`)
 - GitHub PAT with **`repo`** (classic) or fine-grained **Contents: Read and write**
   on the target repos
-- Empty (or existing) repos under the org, e.g. `cautem/cauteum-cli`
+- Empty (or existing) repos under the org, e.g. `cautem/cautem-cli`
 
 ## 1. Build CLI + gateway
 
 ```bash
 cd /path/to/workspace
 export GOWORK=$PWD/go.work
-go build -C cauteum-cli -o ../cauteum ./cmd/cauteum
-go build -C cauteum-gateway -o ../cauteum-gateway ./cmd/cauteum-gateway
-./cauteum install   # or: export PATH="$PWD:$PATH"
+go build -C cautem-cli -o ../cautem ./cmd/cautem
+go build -C cautem-gateway -o ../cautem-gateway ./cmd/cautem-gateway
+./cautem install   # or: export PATH="$PWD:$PATH"
 ```
 
 ## 2. Start gateway + register it
 
 ```bash
-./cauteum-gateway --listen 127.0.0.1:7443 &
-./cauteum gateway add http://127.0.0.1:7443 --local --name local
-./cauteum gateway select local
+./cautem-gateway --listen 127.0.0.1:7443 &
+./cautem gateway add http://127.0.0.1:7443 --local --name local
+./cautem gateway select local
 ```
 
 ## 3. Seed GitHub token (one-shot — not a sticky shell export)
 
 ```bash
 # PAT only for this process; do not leave export in your interactive shell
-GITHUB_TOKEN=ghp_… ./cauteum provider create --name gh --type github --credential GITHUB_TOKEN
-./cauteum provider list   # shows name/type/keys only — never the value
+GITHUB_TOKEN=ghp_… ./cautem provider create --name gh --type github --credential GITHUB_TOKEN
+./cautem provider list   # shows name/type/keys only — never the value
 ```
 
 ## 4. Create a sandbox that can push
 
-Use the write-capable **base policy** from the start (org-scoped `cauteum`):
+Use the write-capable **base policy** from the start (org-scoped `cautem`):
 
 ```bash
-./cauteum sandbox create --name push \
+./cautem sandbox create --name push \
   --workspace "$PWD" \
-  --policy cauteum-cli/policies/github-push-cauteum.yaml \
+  --policy cautem-cli/policies/github-push-cautem.yaml \
   --gateway http://127.0.0.1:7443 \
   --provider gh
 # If instance missing: use --provider github (auto-creates from profile + $GITHUB_TOKEN)
-# or: GITHUB_TOKEN=… ./cauteum provider create --name gh --type github --credential GITHUB_TOKEN
+# or: GITHUB_TOKEN=… ./cautem provider create --name gh --type github --credential GITHUB_TOKEN
 ```
 
-Composition: **base** = push policy (`git-receive-pack` + API write under `/cauteum/**`)
+Composition: **base** = push policy (`git-receive-pack` + API write under `/cautem/**`)
 plus **provider-composed** github endpoints/credential binding from `gh`.
 
 Check:
 
 ```bash
-./cauteum policy get push --base    # editable base
-./cauteum policy get push --full    # effective policy (base + provider-composed)
+./cautem policy get push --base    # editable base
+./cautem policy get push --full    # effective policy (base + provider-composed)
 ```
 
 ### Alternative: create narrow, then widen
 
 ```bash
-./cauteum sandbox create --name push --workspace "$PWD" \
-  --policy cauteum-cli/policies/default.yaml \
+./cautem sandbox create --name push --workspace "$PWD" \
+  --policy cautem-cli/policies/default.yaml \
   --gateway http://127.0.0.1:7443 --provider gh
 
 # push will DENY until:
-./cauteum policy set push --policy cauteum-cli/policies/github-push-cauteum.yaml
+./cautem policy set push --policy cautem-cli/policies/github-push-cautem.yaml
 ```
 
 ## 5. Run the agent *inside* the sandbox
@@ -82,14 +82,14 @@ Do **not** push from the host with a placeholder token. Examples:
 
 ```bash
 # one-shot command
-./cauteum sandbox exec push -- git -C /workspace/cauteum-cli status
+./cautem sandbox exec push -- git -C /workspace/cautem-cli status
 
 # interactive shell (then run your agent / git / gh)
-./cauteum sandbox exec push -- bash
+./cautem sandbox exec push -- bash
 
 # or create-with-command (keeps sandbox)
-./cauteum sandbox create --name agent --workspace "$PWD" \
-  --policy cauteum-cli/policies/github-push-cauteum.yaml \
+./cautem sandbox create --name agent --workspace "$PWD" \
+  --policy cautem-cli/policies/github-push-cautem.yaml \
   --gateway http://127.0.0.1:7443 --provider gh \
   -- bash
 ```
@@ -97,7 +97,7 @@ Do **not** push from the host with a placeholder token. Examples:
 Inside the guest, env looks like:
 
 ```text
-GITHUB_TOKEN=cauteum:resolve:env:GITHUB_TOKEN
+GITHUB_TOKEN=cautem:resolve:env:GITHUB_TOKEN
 ```
 
 `git` / `gh` / `curl` to `github.com` / `api.github.com` go through the sidecar;
@@ -108,20 +108,20 @@ the real PAT is substituted only for credential-bound endpoints.
 Repos must exist on GitHub. From **inside** the sandbox:
 
 ```bash
-cd /workspace/cauteum-cli
-git remote -v   # should be https://github.com/cautem/cauteum-cli.git
+cd /workspace/cautem-cli
+git remote -v   # should be https://github.com/cautem/cautem-cli.git
 git push -u origin main
 ```
 
-Repeat for `cauteum-core`, `cauteum-runtime`, `cauteum-gateway` as needed.
+Repeat for `cautem-core`, `cautem-runtime`, `cautem-gateway` as needed.
 
 ## 6. If push is denied
 
 ```bash
-./cauteum logs push --source proxy | grep -E 'DENIED|FINDING'
-./cauteum policy get push --full | head
+./cautem logs push --source proxy | grep -E 'DENIED|FINDING'
+./cautem policy get push --full | head
 # fix base, then:
-./cauteum policy set push --policy cauteum-cli/policies/github-push-cauteum.yaml
+./cautem policy set push --policy cautem-cli/policies/github-push-cautem.yaml
 ```
 
 Typical causes:
@@ -130,29 +130,29 @@ Typical causes:
 |---------|-----|
 | DENY `git-receive-pack` | base missing push rules → `policy set` push YAML |
 | `credential_endpoint_mismatch` | provider not attached / wrong key binding |
-| GitHub 401 | re-seed: `GITHUB_TOKEN=… cauteum provider update gh --credential GITHUB_TOKEN` |
-| Host push with placeholder | always `cauteum sandbox exec …` — host has no MITM rewrite |
+| GitHub 401 | re-seed: `GITHUB_TOKEN=… cautem provider update gh --credential GITHUB_TOKEN` |
+| Host push with placeholder | always `cautem sandbox exec …` — host has no MITM rewrite |
 
 ## 7. Cleanup
 
 ```bash
-./cauteum sandbox delete push
+./cautem sandbox delete push
 # optional: stop gateway job
 ```
 
 ## How policies work
 
-cauteum starts **default deny**. Widen the base policy when the agent needs more.
+cautem starts **default deny**. Widen the base policy when the agent needs more.
 
 ```bash
-./cauteum gateway ensure   # starts cauteum-gateway beside CLI if needed
-./cauteum sandbox create --from cursor --workspace "$PWD" -- agent
+./cautem gateway ensure   # starts cautem-gateway beside CLI if needed
+./cautem sandbox create --from cursor --workspace "$PWD" -- agent
 # -- agent infers --provider cursor; gateway ensure runs automatically
 ```
 
-| Layer | Builtin `github` provider | After base widen (`github-push-cauteum.yaml`) |
+| Layer | Builtin `github` provider | After base widen (`github-push-cautem.yaml`) |
 |-------|---------------------------|-----------------------------------------------|
-| API | `read-only` | write under `/repos/cauteum/**` + **create repo** |
+| API | `read-only` | write under `/repos/cautem/**` + **create repo** |
 | Git | `git-upload-pack` (clone/fetch) | + `git-receive-pack` (push) |
 
 Typical loop:
@@ -164,8 +164,8 @@ Typical loop:
 
 Create-repo allows in our write base policy:
 
-- `POST /orgs/cauteum/repos` — `gh repo create cautem/cauteum-cli`
-- `POST /user/repos` — user-owned `gh repo create cauteum-cli`
+- `POST /orgs/cautem/repos` — `gh repo create cautem/cautem-cli`
+- `POST /user/repos` — user-owned `gh repo create cautem-cli`
 - then `git-receive-pack` for push
 
 Token still needs GitHub permission (`repo` / admin on org). Policy only admits the HTTP path; GitHub ACLs still apply.
@@ -173,13 +173,13 @@ Token still needs GitHub permission (`repo` / admin on org). Policy only admits 
 ## Agent create + push (inside sandbox)
 
 ```bash
-./cauteum sandbox exec push -- bash
+./cautem sandbox exec push -- bash
 # inside:
-gh repo create cautem/cauteum-cli --private --source=/workspace/cauteum-cli --remote=origin --push
+gh repo create cautem/cautem-cli --private --source=/workspace/cautem-cli --remote=origin --push
 # or:
-gh api -X POST /orgs/cauteum/repos -f name=cauteum-cli -F private=true
-cd /workspace/cauteum-cli && git remote add origin https://github.com/cautem/cauteum-cli.git
+gh api -X POST /orgs/cautem/repos -f name=cautem-cli -F private=true
+cd /workspace/cautem-cli && git remote add origin https://github.com/cautem/cautem-cli.git
 git push -u origin main
 ```
 
-If DENIED: `./cauteum logs push --source proxy` → adjust base → `./cauteum policy set push …`.
+If DENIED: `./cautem logs push --source proxy` → adjust base → `./cautem policy set push …`.

@@ -29,12 +29,12 @@ func TestResolveLinuxHelperPinnedDir(t *testing.T) {
 	built := false
 	build := func(context.Context, string) (string, error) { built = true; return "", nil }
 
-	got, err := resolveLinuxHelper(context.Background(), helperSSHD, "github.com/cautem/cauteum-runtime", build)
+	got, err := resolveLinuxHelper(context.Background(), helperSSHD, "github.com/cautem/cautem-runtime", build)
 	if err != nil || got != want || built {
 		t.Fatalf("got %q, %v (built=%v); want %q", got, err, built, want)
 	}
 
-	_, err = resolveLinuxHelper(context.Background(), helperInit, "github.com/cautem/cauteum-runtime", build)
+	_, err = resolveLinuxHelper(context.Background(), helperInit, "github.com/cautem/cautem-runtime", build)
 	if err == nil || built || !strings.Contains(err.Error(), EnvHelpersDir) {
 		t.Fatalf("pinned dir must not fall back to source builds: err=%v built=%v", err, built)
 	}
@@ -57,7 +57,7 @@ func TestHelperDirsLayout(t *testing.T) {
 	if len(dirs) != 2 {
 		t.Fatalf("dirs = %q", dirs)
 	}
-	sub := filepath.Join("libexec", "cauteum", "linux-"+runtime.GOARCH)
+	sub := filepath.Join("libexec", "cautem", "linux-"+runtime.GOARCH)
 	for _, d := range dirs {
 		if !strings.HasSuffix(d, sub) {
 			t.Fatalf("%q does not end with %q", d, sub)

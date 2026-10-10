@@ -1,5 +1,5 @@
 // Package console implements the browser management console as a thin Go
-// client of the public Cauteum SDK. Authorization remains in the gateway.
+// client of the public cautem SDK. Authorization remains in the gateway.
 package console
 
 import (
@@ -21,13 +21,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cautem/cauteum-runtime/idp"
-	cauteum "github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-runtime/idp"
+	cautem "github.com/cautem/cautem-sdk/go/cautem"
 )
 
 const (
-	sessionCookie = "cauteum_console_session"
-	pendingCookie = "cauteum_console_login"
+	sessionCookie = "cautem_console_session"
+	pendingCookie = "cautem_console_login"
 	maxFormBytes  = 64 << 10
 	requestLimit  = 15 * time.Second
 	sessionTTL    = 8 * time.Hour
@@ -80,9 +80,9 @@ type pageData struct {
 	Overview           map[string]any
 	Workspaces         []string
 	Workspace          string
-	Sandboxes          []cauteum.Sandbox
-	Selected           *cauteum.Sandbox
-	Logs               []cauteum.LogLine
+	Sandboxes          []cautem.Sandbox
+	Selected           *cautem.Sandbox
+	Logs               []cautem.LogLine
 	LifecycleAvailable bool
 	CSRF               string
 	Error              string
@@ -163,7 +163,7 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	if workspace == "" {
 		workspace = "default"
 	}
-	client := cauteum.NewWithToken(s.cfg.Gateway, sess.Token)
+	client := cautem.NewWithToken(s.cfg.Gateway, sess.Token)
 	defer client.Close()
 	client.Workspace = workspace
 	ctx, cancel := context.WithTimeout(r.Context(), requestLimit)
@@ -241,12 +241,12 @@ func (s *Server) sandboxAction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "sandbox name required", http.StatusBadRequest)
 		return
 	}
-	client := cauteum.NewWithToken(s.cfg.Gateway, sess.Token)
+	client := cautem.NewWithToken(s.cfg.Gateway, sess.Token)
 	defer client.Close()
 	ctx, cancel := context.WithTimeout(r.Context(), requestLimit)
 	defer cancel()
 	var (
-		result cauteum.ControlMutationResult
+		result cautem.ControlMutationResult
 		err    error
 	)
 	switch action {
@@ -256,7 +256,7 @@ func (s *Server) sandboxAction(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "sandbox image required", http.StatusBadRequest)
 			return
 		}
-		result, err = client.CreateControlSandboxOperation(ctx, cauteum.Sandbox{Workspace: workspace, Name: name, Image: image}, strings.Fields(r.FormValue("command")))
+		result, err = client.CreateControlSandboxOperation(ctx, cautem.Sandbox{Workspace: workspace, Name: name, Image: image}, strings.Fields(r.FormValue("command")))
 	case "start":
 		result, err = client.ChangeControlSandboxStateOperation(ctx, workspace, name, "start")
 	case "stop":
@@ -318,7 +318,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx, cancel := context.WithTimeout(r.Context(), requestLimit)
 	defer cancel()
-	client := cauteum.New(s.cfg.Gateway)
+	client := cautem.New(s.cfg.Gateway)
 	token, loginErr := client.AuthLogin(ctx)
 	_ = client.Close()
 	if loginErr != nil {

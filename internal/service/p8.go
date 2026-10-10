@@ -6,9 +6,9 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/cautem/cauteum-cli/internal/storage/gwconfig"
-	"github.com/cautem/cauteum-driver/driver"
-	"github.com/cautem/cauteum-sdk/go/cauteum"
+	"github.com/cautem/cautem-cli/internal/storage/gwconfig"
+	"github.com/cautem/cautem-driver/driver"
+	"github.com/cautem/cautem-sdk/go/cautem"
 	"github.com/cautem/slogx"
 )
 
@@ -75,7 +75,7 @@ func (a *App) touchGateway(ctx context.Context, name, id, image, network, status
 	if u == "" {
 		return
 	}
-	_ = a.clientFor(u).UpsertSandbox(ctx, cauteum.Sandbox{
+	_ = a.clientFor(u).UpsertSandbox(ctx, cautem.Sandbox{
 		Name: name, ID: id, Image: image, Network: network, Status: status, Labels: labels,
 	})
 }
@@ -113,7 +113,7 @@ func (a *App) Copy(src, dst string) error {
 		}
 		fmt.Printf("cp: %s:%s → %s\n", sName, sPath, dst)
 	default:
-		return fmt.Errorf("usage: cauteum cp <local> <sandbox>:/path  OR  cauteum cp <sandbox>:/path <local>")
+		return fmt.Errorf("usage: cautem cp <local> <sandbox>:/path  OR  cautem cp <sandbox>:/path <local>")
 	}
 	return nil
 }

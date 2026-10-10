@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cautem/cauteum-core/defaults"
+	"github.com/cautem/cautem-core/defaults"
 	"github.com/cautem/slogx"
 )
 
@@ -19,7 +19,7 @@ const localGatewayURL = "http://" + defaults.GatewayListen
 
 // GatewayEnsure makes sure a reachable gateway is selected (OpenShell install UX).
 // If the current gateway is healthy, it is a no-op. Otherwise it starts a local
-// cauteum-gateway on 127.0.0.1:7443 (sibling binary or PATH), registers it as "local",
+// cautem-gateway on 127.0.0.1:7443 (sibling binary or PATH), registers it as "local",
 // and selects it.
 func (a *App) GatewayEnsure() error {
 	const op = "cli.gateway.ensure"
@@ -47,7 +47,7 @@ func (a *App) GatewayEnsure() error {
 	bin, err := findGatewayBinary()
 	if err != nil {
 		log.Error("gateway binary not found", slogx.Err(err))
-		return fmt.Errorf("gateway ensure: %w\nStart manually: cauteum-gateway --listen %s\nThen: cauteum gateway add local --url %s && cauteum gateway select local",
+		return fmt.Errorf("gateway ensure: %w\nStart manually: cautem-gateway --listen %s\nThen: cautem gateway add local --url %s && cautem gateway select local",
 			err, defaults.GatewayListen, localGatewayURL)
 	}
 	logPath, err := gatewayLogPath()
@@ -108,21 +108,21 @@ func findGatewayBinary() (string, error) {
 	if exe, err := os.Executable(); err == nil {
 		dir := filepath.Dir(exe)
 		candidates = append(candidates,
-			filepath.Join(dir, "cauteum-gateway"),
-			filepath.Join(dir, "cauteum-gateway-darwin-arm64"),
-			filepath.Join(dir, "cauteum-gateway-darwin-amd64"),
-			filepath.Join(dir, "cauteum-gateway-linux-arm64"),
-			filepath.Join(dir, "cauteum-gateway-linux-amd64"),
+			filepath.Join(dir, "cautem-gateway"),
+			filepath.Join(dir, "cautem-gateway-darwin-arm64"),
+			filepath.Join(dir, "cautem-gateway-darwin-amd64"),
+			filepath.Join(dir, "cautem-gateway-linux-arm64"),
+			filepath.Join(dir, "cautem-gateway-linux-amd64"),
 		)
 	}
 	if wd, err := os.Getwd(); err == nil {
 		candidates = append(candidates,
-			filepath.Join(wd, "cauteum-gateway"),
-			filepath.Join(wd, "cauteum-cli", "cauteum-gateway"),
-			filepath.Join(wd, "cauteum-gateway", "cauteum-gateway"),
+			filepath.Join(wd, "cautem-gateway"),
+			filepath.Join(wd, "cautem-cli", "cautem-gateway"),
+			filepath.Join(wd, "cautem-gateway", "cautem-gateway"),
 		)
 	}
-	if p, err := exec.LookPath("cauteum-gateway"); err == nil {
+	if p, err := exec.LookPath("cautem-gateway"); err == nil {
 		candidates = append(candidates, p)
 	}
 	for _, c := range candidates {
@@ -130,7 +130,7 @@ func findGatewayBinary() (string, error) {
 			return c, nil
 		}
 	}
-	return "", fmt.Errorf("cauteum-gateway binary not found next to cauteum or on PATH")
+	return "", fmt.Errorf("cautem-gateway binary not found next to cautem or on PATH")
 }
 
 func gatewayLogPath() (string, error) {
@@ -138,7 +138,7 @@ func gatewayLogPath() (string, error) {
 	if err != nil {
 		dir = os.TempDir()
 	}
-	dir = filepath.Join(dir, "cauteum")
+	dir = filepath.Join(dir, "cautem")
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}

@@ -5,50 +5,50 @@ vars:
 
 tasks:
   agent:cursor:
-    desc: Build cauteum-sandbox:cursor (Cursor Agent CLI)
+    desc: Build cautem-sandbox:cursor (Cursor Agent CLI)
     cmds:
       - |
         set -euo pipefail
         ORG="{{.ORG}}"
-        if ! docker image inspect cauteum-sandbox:local >/dev/null 2>&1; then
-          echo "building base cauteum-sandbox:local …"
+        if ! docker image inspect cautem-sandbox:local >/dev/null 2>&1; then
+          echo "building base cautem-sandbox:local …"
           task -d "$ORG" runtime:image:cli
         fi
-        docker build -t cauteum-sandbox:cursor \
-          --build-arg BASE_IMAGE=cauteum-sandbox:local \
-          -f "$ORG/cauteum-cli/docker/agents/cursor/Dockerfile" \
-          "$ORG/cauteum-cli/docker/agents/cursor"
-        echo "ok: cauteum-sandbox:cursor"
+        docker build -t cautem-sandbox:cursor \
+          --build-arg BASE_IMAGE=cautem-sandbox:local \
+          -f "$ORG/cautem-cli/docker/agents/cursor/Dockerfile" \
+          "$ORG/cautem-cli/docker/agents/cursor"
+        echo "ok: cautem-sandbox:cursor"
 
   agent:claude:
-    desc: Build cauteum-sandbox:claude (Claude Code CLI)
+    desc: Build cautem-sandbox:claude (Claude Code CLI)
     cmds:
       - |
         set -euo pipefail
         ORG="{{.ORG}}"
-        if ! docker image inspect cauteum-sandbox:local >/dev/null 2>&1; then
+        if ! docker image inspect cautem-sandbox:local >/dev/null 2>&1; then
           task -d "$ORG" runtime:image:cli
         fi
-        docker build -t cauteum-sandbox:claude \
-          --build-arg BASE_IMAGE=cauteum-sandbox:local \
-          -f "$ORG/cauteum-cli/docker/agents/claude/Dockerfile" \
-          "$ORG/cauteum-cli/docker/agents/claude"
-        echo "ok: cauteum-sandbox:claude"
+        docker build -t cautem-sandbox:claude \
+          --build-arg BASE_IMAGE=cautem-sandbox:local \
+          -f "$ORG/cautem-cli/docker/agents/claude/Dockerfile" \
+          "$ORG/cautem-cli/docker/agents/claude"
+        echo "ok: cautem-sandbox:claude"
 
   agent:codex:
-    desc: Build cauteum-sandbox:codex (OpenAI Codex CLI)
+    desc: Build cautem-sandbox:codex (OpenAI Codex CLI)
     cmds:
       - |
         set -euo pipefail
         ORG="{{.ORG}}"
-        if ! docker image inspect cauteum-sandbox:local >/dev/null 2>&1; then
+        if ! docker image inspect cautem-sandbox:local >/dev/null 2>&1; then
           task -d "$ORG" runtime:image:cli
         fi
-        docker build -t cauteum-sandbox:codex \
-          --build-arg BASE_IMAGE=cauteum-sandbox:local \
-          -f "$ORG/cauteum-cli/docker/agents/codex/Dockerfile" \
-          "$ORG/cauteum-cli/docker/agents/codex"
-        echo "ok: cauteum-sandbox:codex"
+        docker build -t cautem-sandbox:codex \
+          --build-arg BASE_IMAGE=cautem-sandbox:local \
+          -f "$ORG/cautem-cli/docker/agents/codex/Dockerfile" \
+          "$ORG/cautem-cli/docker/agents/codex"
+        echo "ok: cautem-sandbox:codex"
 
   agent:all:
     desc: Build cursor + claude + codex images

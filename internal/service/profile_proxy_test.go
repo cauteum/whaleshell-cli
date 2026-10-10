@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cautem/cauteum-core/policy"
-	"github.com/cautem/cauteum-providers/provider"
-	"github.com/cautem/cauteum-proxy/proxy"
+	"github.com/cautem/cautem-core/policy"
+	"github.com/cautem/cautem-providers/provider"
+	"github.com/cautem/cautem-proxy/proxy"
 )
 
 func TestOpenShellOpenAIProfileComposesAndRewritesMockRequest(t *testing.T) {
@@ -79,7 +79,7 @@ endpoints:
 	if err != nil {
 		t.Fatal(err)
 	}
-	req.Header.Set("Authorization", "Bearer cauteum:resolve:env:OPENAI_API_KEY")
+	req.Header.Set("Authorization", "Bearer cautem:resolve:env:OPENAI_API_KEY")
 	bound, err := proxy.SecretsForEndpoint(secrets, rules[0].CredentialKeys, proxy.PlaceholderKeysInRequest(req))
 	if err != nil {
 		t.Fatal(err)
@@ -97,7 +97,7 @@ endpoints:
 	}
 
 	wrongEndpoint, _ := http.NewRequest(http.MethodGet, server.URL+"/v1/models", nil)
-	wrongEndpoint.Header.Set("Authorization", "Bearer cauteum:resolve:env:GH_TOKEN")
+	wrongEndpoint.Header.Set("Authorization", "Bearer cautem:resolve:env:GH_TOKEN")
 	if _, err := proxy.SecretsForEndpoint(secrets, rules[0].CredentialKeys, proxy.PlaceholderKeysInRequest(wrongEndpoint)); !errors.Is(err, proxy.ErrCredentialEndpointMismatch) {
 		t.Fatalf("wrong endpoint credential binding error = %v", err)
 	}

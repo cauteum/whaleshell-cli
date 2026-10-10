@@ -56,13 +56,13 @@ func helpText(path []string) string {
 	return rootHelp
 }
 
-const rootHelp = `cauteum — OpenShell-compatible agent sandbox CLI
+const rootHelp = `cautem — OpenShell-compatible agent sandbox CLI
 
 Usage:
-  cauteum [global flags] <command> [flags]
+  cautem [global flags] <command> [flags]
 
 Global flags:
-  -g, --gateway NAME     Select gateway (or OPENSHELL_GATEWAY / CAUTEUM_GATEWAY)
+  -g, --gateway NAME     Select gateway (or OPENSHELL_GATEWAY / CAUTEM_GATEWAY)
   --workspace NAME       Default workspace (or OPENSHELL_WORKSPACE)
   -o, --output FORMAT    text|json|yaml
 
@@ -88,33 +88,33 @@ Commands:
   completions        Shell completions
   version            Print version
 
-Run 'cauteum <command> --help' for details.
+Run 'cautem <command> --help' for details.
 `
 
 var helpTree = map[string]string{
-	"sandbox": `cauteum sandbox — manage sandboxes
+	"sandbox": `cautem sandbox — manage sandboxes
 
 Usage:
-  cauteum sandbox create|list|get|stop|start|delete|exec|connect|upload|download|ssh-config|provider|template …
+  cautem sandbox create|list|get|stop|start|delete|exec|connect|upload|download|ssh-config|provider|template …
 
 Aliases: sb
 
 Examples:
-  cauteum sandbox create --name app --from ollama
-  cauteum sandbox list
-  cauteum sandbox exec app -- ls /
+  cautem sandbox create --name app --from ollama
+  cautem sandbox list
+  cautem sandbox exec app -- ls /
 `,
-	"sandbox create": `cauteum sandbox create — create a sandbox
+	"sandbox create": `cautem sandbox create — create a sandbox
 
 Usage:
-  cauteum sandbox create --name NAME [flags]
+  cautem sandbox create --name NAME [flags]
 
 Flags (OpenShell-aligned):
   --name NAME
   --from base|ollama|cursor|claude|…
   --image IMAGE
   --policy PATH
-  --cpu N --memory SIZE   (or set defaults.memory in config / CAUTEUM_DEFAULT_MEMORY)
+  --cpu N --memory SIZE   (or set defaults.memory in config / CAUTEM_DEFAULT_MEMORY)
   --pids-limit N          (-1 unlimited; default 2048 via driver)
   --provider NAME (repeatable)
   --forward PORT (repeatable)
@@ -122,159 +122,159 @@ Flags (OpenShell-aligned):
   --label KEY=VALUE
   --driver-config-json JSON
 `,
-	"sandbox template": `cauteum sandbox template — workload templates
+	"sandbox template": `cautem sandbox template — workload templates
 
 Usage:
-  cauteum sandbox template create|list|get|delete …
+  cautem sandbox template create|list|get|delete …
 `,
-	"sandbox provider": `cauteum sandbox provider — attach providers to a sandbox
+	"sandbox provider": `cautem sandbox provider — attach providers to a sandbox
 
 Usage:
-  cauteum sandbox provider list|attach|detach …
+  cautem sandbox provider list|attach|detach …
 `,
-	"provider": `cauteum provider — provider instances
+	"provider": `cautem provider — provider instances
 
 Usage:
-  cauteum provider create|list|get|update|delete|profile|refresh|effective …
+  cautem provider create|list|get|update|delete|profile|refresh|effective …
 
 Examples:
-  cauteum provider create --name gh --type github --from-existing
-  cauteum provider refresh configure NAME --credential-key K --strategy oauth2-refresh-token
+  cautem provider create --name gh --type github --from-existing
+  cautem provider refresh configure NAME --credential-key K --strategy oauth2-refresh-token
 `,
-	"provider profile": `cauteum provider profile — custom provider YAML profiles
+	"provider profile": `cautem provider profile — custom provider YAML profiles
 
 Usage:
-  cauteum profile list|show|import|update|export|delete|lint …
-  cauteum profile import --url https://example.org/profile.yaml
-  cauteum profile import --from ./provider-profiles
+  cautem profile list|show|import|update|export|delete|lint …
+  cautem profile import --url https://example.org/profile.yaml
+  cautem profile import --from ./provider-profiles
 `,
-	"profile": `cauteum profile — reusable provider definitions
+	"profile": `cautem profile — reusable provider definitions
 
 Usage:
-  cauteum profile list|show|import|update|export|delete|lint …
+  cautem profile list|show|import|update|export|delete|lint …
 `,
-	"provider refresh": `cauteum provider refresh — credential refresh strategies
+	"provider refresh": `cautem provider refresh — credential refresh strategies
 
 Usage:
-  cauteum provider refresh status|configure|rotate|delete …
+  cautem provider refresh status|configure|rotate|delete …
 
 Strategies: env | oauth2-refresh-token | oauth2-client-credentials | aws-sts-assume-role
 `,
-	"policy": `cauteum policy — network policy
+	"policy": `cautem policy — network policy
 
 Usage:
-  cauteum policy get|set|update|list|delete|check …
+  cautem policy get|set|update|list|delete|check …
 `,
-	"gateway": `cauteum gateway — manage gateways
+	"gateway": `cautem gateway — manage gateways
 
 Usage:
-  cauteum gateway ensure|add|remove|select|info|list|login|logout
+  cautem gateway ensure|add|remove|select|info|list|login|logout
 
   ensure   start/select local gateway on 127.0.0.1:7443 if needed
 `,
-	"workspace": `cauteum workspace — workspaces (gateway-backed)
+	"workspace": `cautem workspace — workspaces (gateway-backed)
 
 Usage:
-  cauteum workspace create --name NAME
-  cauteum workspace list|get|delete NAME
-  cauteum workspace member add|remove|list …
+  cautem workspace create --name NAME
+  cautem workspace list|get|delete NAME
+  cautem workspace member add|remove|list …
 `,
-	"workspace member": `cauteum workspace member — manage members
+	"workspace member": `cautem workspace member — manage members
 
 Usage:
-  cauteum workspace member add --workspace NAME --subject SUBJECT [--role user|admin]
-  cauteum workspace member remove --workspace NAME --subject SUBJECT
-  cauteum workspace member list --workspace NAME
+  cautem workspace member add --workspace NAME --subject SUBJECT [--role user|admin]
+  cautem workspace member remove --workspace NAME --subject SUBJECT
+  cautem workspace member list --workspace NAME
 `,
-	"service": `cauteum service — expose HTTP services
+	"service": `cautem service — expose HTTP services
 
 Usage:
-  cauteum service expose <sandbox> <port> [name]
-  cauteum service list|get|delete …
+  cautem service expose <sandbox> <port> [name]
+  cautem service list|get|delete …
 
 Edge URL (gateway Host router):
   http://<name>.openshell.localhost:<gateway-port>/
 `,
-	"forward": `cauteum forward — TCP forwards into a sandbox
+	"forward": `cautem forward — TCP forwards into a sandbox
 
 Usage:
-  cauteum forward start <host-port> <sandbox> [-d]
-  cauteum forward stop <id>
-  cauteum forward list
+  cautem forward start <host-port> <sandbox> [-d]
+  cautem forward stop <id>
+  cautem forward list
 `,
-	"inference": `cauteum inference — inference.local routing
+	"inference": `cautem inference — inference.local routing
 
 Usage:
-  cauteum inference get|set|update|list|show|local
+  cautem inference get|set|update|list|show|local
 `,
-	"settings": `cauteum settings — key/value settings
+	"settings": `cautem settings — key/value settings
 
 Usage:
-  cauteum settings get|set|delete …
+  cautem settings get|set|delete …
 `,
-	"logs": `cauteum logs — sandbox logs
+	"logs": `cautem logs — sandbox logs
 
 Usage:
-  cauteum logs <name> [--tail] [-n N] [--since 5m]
+  cautem logs <name> [--tail] [-n N] [--since 5m]
 `,
-	"doctor": `cauteum doctor — environment checks
+	"doctor": `cautem doctor — environment checks
 
 Usage:
-  cauteum doctor check
-  cauteum doctor cleanup [--dry-run|--yes]
+  cautem doctor check
+  cautem doctor cleanup [--dry-run|--yes]
 
 cleanup is a scoped dry-run by default. With --yes it removes only dangling
-anonymous Testcontainers volumes and stopped containers labeled cauteum=1.
+anonymous Testcontainers volumes and stopped containers labeled cautem=1.
 `,
-	"install": `cauteum install — install CLI binary and ensure local gateway
+	"install": `cautem install — install CLI binary and ensure local gateway
 
 Usage:
-  cauteum install [--force]
+  cautem install [--force]
 
-Copies cauteum to ~/.local/share/cauteum/bin, symlinks ~/.local/bin/cauteum,
-then starts/selects a local cauteum-gateway if needed.
+Copies cautem to ~/.local/share/cautem/bin, symlinks ~/.local/bin/cautem,
+then starts/selects a local cautem-gateway if needed.
 `,
-	"whoami": `cauteum whoami — print identity
+	"whoami": `cautem whoami — print identity
 
 Usage:
-  cauteum whoami
-  cauteum -o json whoami
+  cautem whoami
+  cautem -o json whoami
 `,
-	"completions": `cauteum completions — shell completions
+	"completions": `cautem completions — shell completions
 
 Usage:
-  cauteum completions <bash|zsh|fish|powershell>
+  cautem completions <bash|zsh|fish|powershell>
 `,
-	"status": `cauteum status — gateway connectivity
+	"status": `cautem status — gateway connectivity
 
 Usage:
-  cauteum status
-  cauteum -o json status
+  cautem status
+  cautem -o json status
 `,
-	"health": `cauteum health — engine and gateway health probe
+	"health": `cautem health — engine and gateway health probe
 
 Usage:
-  cauteum health
-  cauteum -o json health
+  cautem health
+  cautem -o json health
 `,
-	"init": `cauteum init — write an agent starter policy
+	"init": `cautem init — write an agent starter policy
 
 Usage:
-  cauteum init --agent cursor [--dir DIR] [--force]
+  cautem init --agent cursor [--dir DIR] [--force]
 `,
-	"exec": `cauteum exec — execute a command in a sandbox
+	"exec": `cautem exec — execute a command in a sandbox
 
 Usage:
-  cauteum exec [--name] NAME -- COMMAND [ARG ...]
+  cautem exec [--name] NAME -- COMMAND [ARG ...]
 `,
-	"term": `cauteum term — interactive TUI
+	"term": `cautem term — interactive TUI
 
 Usage:
-  cauteum term
+  cautem term
 `,
-	"rule": `cauteum rule — approval rules (MVP)
+	"rule": `cautem rule — approval rules (MVP)
 
 Usage:
-  cauteum rule get|approve|approve-all|reject|history|clear …
+  cautem rule get|approve|approve-all|reject|history|clear …
 `,
 }

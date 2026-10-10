@@ -12,7 +12,7 @@ import (
 
 const maxDriverConfigBytes = 1 << 20
 
-// podmanDriverConfigFromEnvironment adapts OpenShell TOML and Cauteum-native
+// podmanDriverConfigFromEnvironment adapts OpenShell TOML and cautem-native
 // JSON into one driver map. Native values override OpenShell values per key;
 // OpenShell gateway defaults are inherited before that overlay is applied.
 func podmanDriverConfigFromEnvironment() (map[string]any, error) {
@@ -40,13 +40,13 @@ func podmanDriverConfigFromEnvironment() (map[string]any, error) {
 			}
 		}
 	}
-	if raw := os.Getenv("CAUTEUM_PODMAN_CONFIG"); raw != "" {
+	if raw := os.Getenv("CAUTEM_PODMAN_CONFIG"); raw != "" {
 		if len(raw) > maxDriverConfigBytes {
-			return nil, fmt.Errorf("CAUTEUM_PODMAN_CONFIG exceeds %d bytes", maxDriverConfigBytes)
+			return nil, fmt.Errorf("CAUTEM_PODMAN_CONFIG exceeds %d bytes", maxDriverConfigBytes)
 		}
 		var config map[string]any
 		if err := json.Unmarshal([]byte(raw), &config); err != nil || config == nil {
-			return nil, fmt.Errorf("CAUTEUM_PODMAN_CONFIG must be a JSON object")
+			return nil, fmt.Errorf("CAUTEM_PODMAN_CONFIG must be a JSON object")
 		}
 		for key, value := range config {
 			out[key] = value
